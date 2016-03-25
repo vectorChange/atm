@@ -11,5 +11,4 @@ public class CardController extends AbstractController implements CardController
 		System.out.println("CardController:view层通过该control层设置model层的cardId值("+newNumber+")，该control调用抽象父类Controller的某方法（反射）设置值");
 		setModelProperty(PROPERTY_CARDID, newNumber);
 	}
-    
 }
