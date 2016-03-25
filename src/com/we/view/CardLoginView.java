@@ -96,7 +96,7 @@ public class CardLoginView extends JFrame implements AbstractView{
 				if(cardController==null){
 					System.out.println("空cardController");
 				}else{
-					System.out.println("CardLoginView: View->Model:点击登陆，由cardController去设置Model\n");
+					System.out.println("2.1 View->Model: [CardLoginView]点击登陆，由cardController去设置Model");
 					cardController.setCardAccount(23333);
 				}
 			}
@@ -116,14 +116,19 @@ public class CardLoginView extends JFrame implements AbstractView{
 
 	/**
 	 * model层改变时 经过Controll调用其父类的setModelProperty的反射调用model的set方法，
-	 * 再有model的set方法调用父类model的firePropertyChange()来起通知，该方法通知到这个view
+	 * 再由model的set方法调用父类model的firePropertyChange()来起通知，该方法通知到这个view
 	 */
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		if (evt.getPropertyName().equals(CardControllerFace.PROPERTY_CARDID)){
-			tf_acc.setText("model通知view，新值为"+evt.getNewValue().toString());
-			System.out.println("model改变->登陆");
+			String newVal = evt.getNewValue().toString();
+			if(!newVal.equals(tf_acc.getText())){
+				tf_acc.setText(newVal);
+				System.out.println("1.3 Model->View: [CardLoginView]view接收到model发来的通知，新值为"+evt.getNewValue().toString());
+				
+				System.out.println("2.4 View->Model->View【if优化后不发生】: [CardLoginView]model值发起的通知被View接收");
+			}
 		}
 		
 	}

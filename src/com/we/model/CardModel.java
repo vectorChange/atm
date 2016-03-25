@@ -24,6 +24,9 @@ public class CardModel extends AbstractModel {
 	public void setCardId(Integer cardId) {
 		Integer oldCardId = this.cardId;
 		this.cardId = cardId;
+		System.out.println("1.2 Model->View: [CardModel]setXXX由Controll的反射调用，设置model值并发起通知");
+		System.out.println("2.3 View->Model: [CardModel]通过反射被调用，设置model值并发起通知");
+		//如果这里根据值是否改变而选择性调用发起通知，那么就难处理设置相同值的情况，所以放view层来选择性更新UI是个不错选择
 		firePropertyChange(CardControllerFace.PROPERTY_CARDID,oldCardId,cardId);
 	}
 	public Integer getUserId() {
