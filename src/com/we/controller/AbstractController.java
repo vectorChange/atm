@@ -58,21 +58,31 @@ public abstract class AbstractController implements PropertyChangeListener {
 	 *            = An object that represents the new value of the property.
 	 */
 	protected void setModelProperty(String propertyName, Object newValue) {
-
 		for (AbstractModel model : registeredModels) {
 			try {
-
 				Method method = model.getClass().getMethod(
 						"set" + propertyName,
 						new Class[] { newValue.getClass() }
-
 				);
 				method.invoke(model, newValue);
-
 			} catch (Exception ex) {
 				// Handle exception.
 			}
 		}
 	}
-
+//	protected String getModelProperty(String propertyName) {
+//		for (AbstractModel model : registeredModels) {
+//			try {
+//				Method method = model.getClass().getMethod(
+//						"get" + propertyName,
+//						new Class[] {}
+//				);
+//				return method.invoke(model, new Object[]{}).toString();
+//			} catch (Exception ex) {
+//				// Handle exception.
+//			}
+//		}
+//		return "-1";
+//	}
+	
 }
