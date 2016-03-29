@@ -13,7 +13,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.we.util.DbManager;
+import com.we.UserMain;
+import com.we.dao.CardManager;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class UserLoginFrame extends JFrame {
 
@@ -59,9 +63,17 @@ public class UserLoginFrame extends JFrame {
 		textField.setBounds(189, 77, 177, 30);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		textField.setText("1");
+		textField.setText("1001");
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() ==  KeyEvent.VK_ENTER){
+					doLogin();
+				}
+			}
+		});
 		passwordField.setText("1");
 		passwordField.setBounds(189, 140, 177, 30);
 		contentPane.add(passwordField);
@@ -74,13 +86,7 @@ public class UserLoginFrame extends JFrame {
 		JButton btnNewButton = new JButton("登陆");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DbManager dbManager = DbManager.getInstance();
-				boolean loginRes = dbManager.queryLogin(DbManager.TYPE_USER,textField.getText(),passwordField.getText());
-				if(loginRes){
-					System.out.println("登陆成功");
-				}else{
-					System.out.println("登陆失败");
-				}
+				doLogin();
 			}
 		});
 		btnNewButton.setBounds(125, 227, 93, 30);
@@ -95,5 +101,17 @@ public class UserLoginFrame extends JFrame {
 		btnNewButton_1.setBounds(273, 227, 93, 30);
 		contentPane.add(btnNewButton_1);
 	}
-
+	
+	private void doLogin() {
+		CardManager dbManager = CardManager.getInstance();
+		boolean loginRes = dbManager.queryLogin(textField.getText(),passwordField.getText());
+		if(loginRes){
+			System.out.println("登陆成功");
+			UserMain userMain = new UserMain();
+			userMain.setVisible(true);
+			dispose();
+		}else{
+			System.out.println("登陆失败");
+		}				
+	}
 }
