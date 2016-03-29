@@ -1,18 +1,20 @@
 package com.we.view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-@SuppressWarnings("serial")
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.we.util.DbManager;
+
 public class UserLoginFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -57,8 +59,10 @@ public class UserLoginFrame extends JFrame {
 		textField.setBounds(189, 77, 177, 30);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		textField.setText("1");
 		
 		passwordField = new JPasswordField();
+		passwordField.setText("1");
 		passwordField.setBounds(189, 140, 177, 30);
 		contentPane.add(passwordField);
 		
@@ -68,10 +72,26 @@ public class UserLoginFrame extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnNewButton = new JButton("登陆");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DbManager dbManager = DbManager.getInstance();
+				boolean loginRes = dbManager.queryLogin(DbManager.TYPE_USER,textField.getText(),passwordField.getText());
+				if(loginRes){
+					System.out.println("登陆成功");
+				}else{
+					System.out.println("登陆失败");
+				}
+			}
+		});
 		btnNewButton.setBounds(125, 227, 93, 30);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("退出");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnNewButton_1.setBounds(273, 227, 93, 30);
 		contentPane.add(btnNewButton_1);
 	}
