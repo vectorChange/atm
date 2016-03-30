@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
 
 public class UserLoginFrame extends JFrame {
 
+	private static final long serialVersionUID = 1509690724425252566L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
@@ -104,7 +105,7 @@ public class UserLoginFrame extends JFrame {
 	
 	private void doLogin() {
 		CardManager dbManager = CardManager.getInstance();
-		boolean loginRes = dbManager.queryLogin(textField.getText(),passwordField.getText());
+		boolean loginRes = dbManager.queryLogin(textField.getText(),new String(passwordField.getPassword()));
 		if(loginRes){
 			System.out.println("登陆成功");
 			UserMain userMain = new UserMain();

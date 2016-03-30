@@ -1,6 +1,5 @@
 package com.we.view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,6 +17,7 @@ import com.we.dao.CardManager;
 
 public class CardSaveView extends JFrame implements ActionListener{
 
+	private static final long serialVersionUID = -4046477038390427048L;
 	private JPanel contentPane;
 	private JTextField tf_num;
 	private JButton btn_100;

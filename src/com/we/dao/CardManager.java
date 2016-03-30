@@ -68,8 +68,25 @@ public class CardManager {
 	}
 
 	public boolean saveCash(int money) {
+		int cash = dbManager.queryCash();
+		cash += money;
+		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardID = "+cardId;
+		try {
+			Statement st = conn.createStatement();
+			if( 0 != st.executeUpdate(sql) ){
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean takeCash(int money) {
 		int oldCash = dbManager.queryCash();
-		money += oldCash;
+		money -= oldCash;
 
 		System.out.println("旧款:"+oldCash+" 新款:"+money);
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ money+" WHERE cardID = "+cardId;
@@ -99,4 +116,5 @@ public class CardManager {
 		}
 		return -1;
 	}
+	
 }

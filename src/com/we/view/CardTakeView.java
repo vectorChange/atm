@@ -7,9 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class CardTransfersView extends JFrame {
-
-	private static final long serialVersionUID = 3477820948172292970L;
+public class CardTakeView extends JFrame {
+	private static final long serialVersionUID = -8589646050175082423L;
 	private JPanel contentPane;
 
 	/**
@@ -19,7 +18,7 @@ public class CardTransfersView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CardTransfersView frame = new CardTransfersView();
+					CardTakeView frame = new CardTakeView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -31,7 +30,7 @@ public class CardTransfersView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CardTransfersView() {
+	public CardTakeView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
