@@ -8,15 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.Window.Type;
 
 @SuppressWarnings("serial")
-public class LoginFrame extends JFrame {
+public class LoginFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
+	private JButton btnManager;
+	private JButton btnNormal;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -30,9 +30,6 @@ public class LoginFrame extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public LoginFrame() {
 		setResizable(false);
 		setTitle("身份选择");
@@ -42,23 +39,30 @@ public class LoginFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JButton btnNewButton = new JButton("普通账号");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new UserLoginFrame().setVisible(true);
-				dispose();
-			}
-		});
-		btnNewButton.setBounds(164, 51, 115, 37);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("管理员");
-		btnNewButton_1.setBounds(164, 122, 115, 37);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("超级管理员");
-		btnNewButton_2.setBounds(164, 193, 115, 37);
-		contentPane.add(btnNewButton_2);
+		initComponent();
 	}
+
+	// 初始化组件
+	private void initComponent() {
+		btnManager = new JButton("管理员");
+		btnNormal = new JButton("普通账号");
+		btnNormal.setBounds(164, 83, 115, 37);
+		contentPane.add(btnNormal);
+		btnManager.setBounds(164, 167, 115, 37);
+		contentPane.add(btnManager);
+		btnManager.addActionListener(this);
+		btnNormal.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton tmp = (JButton) e.getSource();
+		if (tmp == btnNormal) {
+			new UserLoginFrame().setVisible(true);
+		}else if (tmp == btnManager){
+			// TODO
+		}
+		dispose();
+	}
+
 }

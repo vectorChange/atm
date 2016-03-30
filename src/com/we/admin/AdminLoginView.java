@@ -1,4 +1,4 @@
-package com.we.view;
+package com.we.admin;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,10 +18,10 @@ import com.we.dao.CardManager;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.Window.Type;
 
-public class UserLoginFrame extends JFrame {
+public class AdminLoginView extends JFrame {
 
+	// 序列号
 	private static final long serialVersionUID = 1509690724425252566L;
 	private JPanel contentPane;
 	private JTextField textField;
@@ -34,7 +34,7 @@ public class UserLoginFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UserLoginFrame frame = new UserLoginFrame();
+					AdminLoginView frame = new AdminLoginView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,9 +46,9 @@ public class UserLoginFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UserLoginFrame() {
+	public AdminLoginView() {
 		setResizable(false);
-		setTitle("登录界面");
+		setTitle("管理用户登录");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 501, 360);
 		contentPane = new JPanel();
@@ -56,7 +56,7 @@ public class UserLoginFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("卡号：");
+		JLabel lblNewLabel = new JLabel("帐号：");
 		lblNewLabel.setFont(new Font("幼圆", Font.BOLD, 14));
 		lblNewLabel.setBounds(125, 84, 54, 15);
 		contentPane.add(lblNewLabel);
@@ -109,13 +109,11 @@ public class UserLoginFrame extends JFrame {
 		boolean loginRes = dbManager.queryLogin(textField.getText(),new String(passwordField.getPassword()));
 		if(loginRes){
 			System.out.println("登陆成功");
-//			UserMain userMain = new UserMain();
-//			userMain.setVisible(true);
-			new UserMain().setVisible(true);
+			UserMain userMain = new UserMain();
+			userMain.setVisible(true);
 			dispose();
 		}else{
-			// TODO 弹出对话框
-			System.out.println("用户密码不正确或用户不存在");
+			System.out.println("登陆失败");
 		}				
 	}
 }
