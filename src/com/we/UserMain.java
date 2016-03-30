@@ -1,9 +1,8 @@
 package com.we;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Button;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,15 +14,19 @@ import javax.swing.border.EmptyBorder;
 import com.we.util.MainImagePane;
 import com.we.view.CardQueryView;
 import com.we.view.CardSaveView;
+import com.we.view.CardTakeView;
 import com.we.view.CardTransfersView;
 
 public class UserMain extends JFrame implements ActionListener{
 
+	private static final long serialVersionUID = -87501980138210364L;
 	private JPanel contentPane;
 	private JButton btn_query;
 	private JButton btn_save;
 	private JButton btn_take;
 	private JButton btn_transfers;
+	private JButton btn_history;
+	private JButton btn_exit;
 
 	/**
 	 * Launch the application.
@@ -46,7 +49,7 @@ public class UserMain extends JFrame implements ActionListener{
 	 */
 	public UserMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 503, 451);
+		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -56,42 +59,54 @@ public class UserMain extends JFrame implements ActionListener{
 		mainImagePane.setLayout(null);
 		
 		btn_query = new JButton("查询");
-		btn_query.setBounds(10, 66, 93, 23);
+		btn_query.setBounds(10, 121, 93, 23);
 		mainImagePane.add(btn_query);
 		btn_query.addActionListener(this);
 		
 		btn_save = new JButton("存款");
-		btn_save.setBounds(10, 130, 93, 23);
+		btn_save.setBounds(749, 230, 93, 23);
 		mainImagePane.add(btn_save);
 		btn_save.addActionListener(this);
 		
 		btn_take = new JButton("取款");
-		btn_take.setBounds(10, 188, 93, 23);
+		btn_take.setBounds(749, 121, 93, 23);
 		mainImagePane.add(btn_take);
 		btn_take.addActionListener(this);
 		
 		btn_transfers = new JButton("转账");
-		btn_transfers.setBounds(10, 253, 93, 23);
+		btn_transfers.setBounds(749, 345, 93, 23);
 		btn_transfers.addActionListener(this);
 		mainImagePane.add(btn_transfers);
+		
+		btn_history = new JButton("记录查询");
+		btn_history.setBounds(10, 230, 93, 23);
+		mainImagePane.add(btn_history);
+		
+		btn_exit = new JButton("退出");
+		btn_exit.addActionListener(this);
+		btn_exit.setBounds(10, 345, 93, 23);
+		mainImagePane.add(btn_exit);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btn_query){
+		JButton btn = (JButton)e.getSource();
+		if( btn == btn_query){
 			CardQueryView cardQueryView = new CardQueryView();
 			cardQueryView.setVisible(true);
 			dispose();
-		}else if(e.getSource() == btn_save){
+		}else if(btn == btn_save){
 			CardSaveView cardSaveView = new CardSaveView();
 			cardSaveView.setVisible(true);
 			dispose();
-		}else if(e.getSource() == btn_take){
-//			new CardT().show();
+		}else if(btn == btn_take){
+			new CardTakeView().setVisible(true);
 			dispose();
-		}else if(e.getSource() == btn_transfers){
+		}else if(btn == btn_transfers){
 			CardTransfersView cardTransfersView = new CardTransfersView();
 			cardTransfersView.setVisible(true);
+			dispose();
+		}else if(btn == btn_exit){
 			dispose();
 		}
 	}

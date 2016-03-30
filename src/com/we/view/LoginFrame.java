@@ -37,7 +37,7 @@ public class LoginFrame extends JFrame {
 		setResizable(false);
 		setTitle("身份选择");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 438, 300);
+		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -50,15 +50,11 @@ public class LoginFrame extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(164, 51, 115, 37);
+		btnNewButton.setBounds(305, 93, 115, 37);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("管理员");
-		btnNewButton_1.setBounds(164, 122, 115, 37);
+		btnNewButton_1.setBounds(305, 219, 115, 37);
 		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("超级管理员");
-		btnNewButton_2.setBounds(164, 193, 115, 37);
-		contentPane.add(btnNewButton_2);
 	}
 }

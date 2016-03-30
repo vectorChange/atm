@@ -69,6 +69,7 @@ public class CardManager {
 
 	public boolean saveCash(int money) {
 		int cash = dbManager.queryCash();
+		System.out.println("存款: 旧款:"+cash+" 新款:"+(cash+money));
 		cash += money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardID = "+cardId;
 		try {
@@ -85,11 +86,10 @@ public class CardManager {
 	}
 	
 	public boolean takeCash(int money) {
-		int oldCash = dbManager.queryCash();
-		money -= oldCash;
-
-		System.out.println("旧款:"+oldCash+" 新款:"+money);
-		String sql = "UPDATE "+TB_CARD+" SET cash= "+ money+" WHERE cardID = "+cardId;
+		int cash = dbManager.queryCash();
+		System.out.println("取款: 旧款:"+cash+" 新款:"+(cash-money));
+		cash -= money;
+		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardID = "+cardId;
 		try {
 			Statement st = conn.createStatement();
 			if( 0 != st.executeUpdate(sql) ){
