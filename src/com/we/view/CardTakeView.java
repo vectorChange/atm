@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
+import com.we.dao.TradeManager;
 
 public class CardTakeView extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -8589646050175082423L;
@@ -23,7 +24,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 	private JButton btn_300;
 	private JButton btn_1000;
 	private JButton btn_500;
-
+	TradeManager tradeManager = TradeManager.getInstance();	
 	CardManager dbManager = CardManager.getInstance();
 	private JButton btn_100;
 	/**
@@ -101,21 +102,32 @@ public class CardTakeView extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
-		if(btn == btn_300){
-            dbManager.takeCash(300);
-        }else if(btn == btn_500){
-            dbManager.takeCash(500);
-        }else if(btn == btn_1000){
-            dbManager.takeCash(1000);
-        }else if(btn == btn_100){
-            dbManager.takeCash(100);
-        }else if(btn == btn_sure){
-            int addNum = Integer.parseInt(tf_num.getText());
-            dbManager.takeCash(addNum);
-            new CardBusinessDone(addNum).setVisible(true);;
-        }else if(btn == btn_back){
-            new UserMain().setVisible(true);
-            dispose();
+		int subNum = 0;
+		if(btn == btn_back){
+			new UserMain().setVisible(true);
+			dispose();
+		}else{
+			if(btn == btn_300){
+				subNum = 300;
+			}else if(btn == btn_500){
+				subNum = 500;
+			}else if(btn == btn_1000){
+				subNum = 1000;
+			}else if(btn == btn_100){
+				subNum = 100;
+			}else if(btn == btn_sure){
+			    subNum = Integer.parseInt(tf_num.getText());
+			}
+			if(dbManager.takeCash(subNum)){
+				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TAKE, subNum, TradeManager.TARGET_NULL)){
+					new CardBusinessDone(getClass(), subNum).setVisible(true);
+					dispose();
+				}else{
+			        System.err.println("取款失败");
+			    }
+			}else{
+				System.err.println("取款失败");
+			}
         }
 	}
 }

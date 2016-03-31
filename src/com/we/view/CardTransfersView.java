@@ -1,25 +1,30 @@
 package com.we.view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.we.UserMain;
+import com.we.dao.CardManager;
+import com.we.dao.TradeManager;
 
 public class CardTransfersView extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 3477820948172292970L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JButton btn_exit;
-
+	private JTextField tf_cardNum;
+	private JButton btn_back;
+	private JButton btn_sure;
+	CardManager cardManager = CardManager.getInstance();
+	TradeManager tradeManager = TradeManager.getInstance();
+	private JButton btn_clear;
 	/**
 	 * Launch the application.
 	 */
@@ -48,38 +53,63 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("请输入转入卡号");
-		lblNewLabel.setBounds(268, 98, 144, 15);
+		lblNewLabel.setBounds(310, 100, 144, 15);
 		contentPane.add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(268, 152, 144, 21);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		tf_cardNum = new JTextField();
+		tf_cardNum.setText("1002");
+		tf_cardNum.setBounds(310, 157, 144, 21);
+		contentPane.add(tf_cardNum);
+		tf_cardNum.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("小心诈骗，客服电话66666");
-		lblNewLabel_1.setBounds(274, 224, 163, 73);
+		lblNewLabel_1.setBounds(310, 306, 163, 73);
 		contentPane.add(lblNewLabel_1);
 		
-		btn_exit = new JButton("退出");
-		btn_exit.addActionListener(this);
-		btn_exit.setBounds(10, 355, 93, 23);
-		contentPane.add(btn_exit);
+		btn_back = new JButton("返回主菜单");
+		btn_back.addActionListener(this);
+		btn_back.setBounds(33, 492, 117, 23);
+		contentPane.add(btn_back);
+		btn_back.addActionListener(this);
 
 		
-		JButton button_1 = new JButton("确定");
-		button_1.setBounds(618, 355, 93, 23);
-		contentPane.add(button_1);
+		btn_sure = new JButton("确定");
+		btn_sure.setBounds(725, 492, 93, 23);
+		contentPane.add(btn_sure);
+		btn_sure.addActionListener(this);
 		
-		JButton button_2 = new JButton("更正");
-		button_2.setBounds(618, 249, 93, 23);
-		contentPane.add(button_2);
+		btn_clear = new JButton("更正");
+		btn_clear.setBounds(725, 386, 93, 23);
+		contentPane.add(btn_clear);
+		btn_clear.addActionListener(this);
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
-		if(btn == btn_exit){
+		if(btn == btn_back){
+			new UserMain().setVisible(true);
 			dispose();
+		}else if(btn==btn_sure){
+			String targetCardNum = tf_cardNum.getText();
+			if(cardManager.getCardNum().equals(targetCardNum)){
+				System.out.println("不能给自己转账");
+				return;
+			}
+			int transCash = 1;
+			if(cardManager.transfersCash(targetCardNum,transCash)){
+				int targetCardId = cardManager.getCardIdByCardNum(targetCardNum);
+				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, transCash, targetCardId)){
+					System.out.println("插入转账记录成功");
+				}else{
+					System.out.println("插入转账记录失败");
+				}
+				System.out.println("转账成功");
+			}else{
+				System.out.println("转账失败");
+			}
+		}else if(btn==btn_clear){
+			tf_cardNum.setText("");
 		}
 	}
 

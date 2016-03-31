@@ -19,9 +19,9 @@ import com.we.dao.CardManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class UserLoginFrame extends JFrame {
 
-	private static final long serialVersionUID = 1509690724425252566L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;

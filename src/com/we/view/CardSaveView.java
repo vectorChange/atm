@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
+import com.we.dao.TradeManager;
 
 public class CardSaveView extends JFrame implements ActionListener{
 
@@ -24,7 +25,7 @@ public class CardSaveView extends JFrame implements ActionListener{
 	private JButton btn_300;
 	private JButton btn_500; 
 	private JButton btn_1000;
-	
+	TradeManager tradeManager = TradeManager.getInstance();	
 	CardManager dbManager = CardManager.getInstance();
 	private JButton btn_back;
 	private JButton btn_sure;
@@ -58,13 +59,13 @@ public class CardSaveView extends JFrame implements ActionListener{
 		contentPane.setLayout(null);
 		
 		btn_100 = new JButton("100");
-		btn_100.setBounds(20, 98, 93, 23);
+		btn_100.setBounds(10, 98, 93, 23);
 		contentPane.add(btn_100);
 		btn_100.addActionListener(this);
 		
 
 		btn_300 = new JButton(new ImageIcon("res\\btn_300.png"));
-		btn_300.setBounds(20, 211, 93, 23);
+		btn_300.setBounds(20, 211, 104, 36);
 		btn_300.setContentAreaFilled(false);
 		btn_300.setBorderPainted(false);
 		contentPane.add(btn_300);
@@ -77,7 +78,6 @@ public class CardSaveView extends JFrame implements ActionListener{
 		btn_500.setBorderPainted(false);
 		contentPane.add(btn_500);
 		btn_500.addActionListener(this);
-		
 		
 		
 //		JButton button = new JButton(new ImageIcon("res\\btn_500.png"));
@@ -118,22 +118,33 @@ public class CardSaveView extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int addNum = 0;
 		JButton btn = (JButton)e.getSource();
-		if(btn == btn_300){
-            dbManager.saveCash(300);
-        }else if(btn == btn_500){
-            dbManager.saveCash(500);
-        }else if(btn == btn_1000){
-            dbManager.saveCash(1000);
-        }else if(btn == btn_100){
-            dbManager.saveCash(100);
-        }else if(btn == btn_sure){
-            int addNum = Integer.parseInt(tf_num.getText());
-            dbManager.saveCash(addNum);
-            new CardBusinessDone(addNum).setVisible(true);;
-        }else if(btn == btn_back){
-            new UserMain().setVisible(true);
-            dispose();
+		if(btn == btn_back){
+			new UserMain().setVisible(true);
+			dispose();
+		}else{
+			if(btn == btn_300){
+				addNum = 300;
+			}else if(btn == btn_500){
+				addNum = 500;
+			}else if(btn == btn_1000){
+				addNum = 1000;
+			}else if(btn == btn_100){
+				addNum = 100;
+			}else if(btn == btn_sure){
+			    addNum = Integer.parseInt(tf_num.getText());
+			}
+			if(dbManager.saveCash(addNum)){
+				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_SAVE, addNum, TradeManager.TARGET_NULL)){
+					new CardBusinessDone(getClass(), addNum).setVisible(true);
+					dispose();
+				}else{
+			        System.err.println("存款失败");
+			    }
+			}else{
+				System.err.println("存款失败");
+			}
         }
 	}
 }
