@@ -20,8 +20,7 @@ public class CardQueryView extends JFrame  implements ActionListener{
 	private static final long serialVersionUID = -838514821792658268L;
 	private JPanel contentPane;
 	private JButton btn_save;
-	private JButton button_3;
-	private JButton button_4;
+	private JButton btn_history;
 	private JButton btn_back;
 	private JButton btn_transfers;
 	private JButton btn_take;
@@ -123,15 +122,10 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		contentPane.add(btn_back);
 		btn_back.addActionListener(this);
 		
-		button_3 = new JButton("企业年金");
-		button_3.setBounds(10, 344, 93, 23);
-		contentPane.add(button_3);
-		button_3.addActionListener(this);
-		
-		button_4 = new JButton("交易明细");
-		button_4.setBounds(10, 481, 93, 23);
-		contentPane.add(button_4);
-		button_4.addActionListener(this);
+		btn_history = new JButton("交易明细");
+		btn_history.setBounds(10, 481, 93, 23);
+		contentPane.add(btn_history);
+		btn_history.addActionListener(this);
 		
 		JLabel label_7 = new JLabel("上期结欠金额：");
 		label_7.setForeground(Color.RED);
@@ -166,6 +160,9 @@ public class CardQueryView extends JFrame  implements ActionListener{
             CardTransfersView cardTransfersView = new CardTransfersView();
             cardTransfersView.setVisible(true);
             dispose();
+        }else if(btn == btn_history){
+	        new CardDetailsView().setVisible(true);
+			dispose();
         }
 	}
 }

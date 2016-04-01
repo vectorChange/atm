@@ -1,11 +1,12 @@
 package com.we.dao;
 
-import java.awt.List;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.we.bean.TradeInfo;
 import com.we.util.DateUtil;
@@ -73,7 +74,7 @@ public class TradeManager {
 				TradeInfo tradeInfo = new TradeInfo();
 				tradeInfo.setTradeId(rs.getInt("tradeId"));
 				tradeInfo.setCardId(rs.getInt("cardId"));
-				tradeInfo.setTradeDate(rs.getString("tradeDate"));
+				tradeInfo.setTradeDate(rs.getString("tradeDate").substring(0,16));
 				tradeInfo.setTradeType(rs.getInt("tradeType"));
 				tradeInfo.setTradeMoney(rs.getInt("tradeMoney"));
 				tradeInfo.setTarget(rs.getInt("target"));

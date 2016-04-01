@@ -17,6 +17,7 @@ import com.we.UserMain;
 import com.we.bean.TradeInfo;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
+import com.we.dao.UserManager;
 
 @SuppressWarnings("serial")
 public class CardDetailsView extends JFrame implements ActionListener{
@@ -28,6 +29,7 @@ public class CardDetailsView extends JFrame implements ActionListener{
 	private JButton btn_exit;
 	private JTable table;
 	TradeManager tradeManager = TradeManager.getInstance();
+	UserManager userManager = UserManager.getInstance();
 	
 	/**
 	 * Launch the application.
@@ -75,13 +77,14 @@ public class CardDetailsView extends JFrame implements ActionListener{
 		String rowData[][] = new String[100][5];
 		Object columnNames[] = { "序号", "交易时间", "交易类型", "交易金额","转账对象"};
 		for (int i = 0; i < dataList.size(); i++) {
+			
 			rowData[i][0] = String.valueOf(i+1);
 			rowData[i][1] = dataList.get(i).getTradeDate();
 			rowData[i][2] = getShowType(dataList.get(i).getTradeType());
 			rowData[i][3] = dataList.get(i).getTradeMoney()+" CNY";
 			int targetId = dataList.get(i).getTarget();
 			if(targetId != TradeManager.TARGET_NULL){
-				rowData[i][4] = getShowTarget(targetId);
+				rowData[i][4] = userManager.getUserNameByCardId(targetId);
 			}
 		}
 		JScrollPane scroll = new JScrollPane();  

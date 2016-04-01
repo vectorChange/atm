@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class CardTransfersView extends JFrame implements ActionListener {
 
@@ -25,6 +27,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 	CardManager cardManager = CardManager.getInstance();
 	TradeManager tradeManager = TradeManager.getInstance();
 	private JButton btn_clear;
+	private JTextField tf_cash;
 	/**
 	 * Launch the application.
 	 */
@@ -53,10 +56,16 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("请输入转入卡号");
-		lblNewLabel.setBounds(310, 100, 144, 15);
+		lblNewLabel.setBounds(161, 160, 144, 15);
 		contentPane.add(lblNewLabel);
 		
 		tf_cardNum = new JTextField();
+		tf_cardNum.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+			}
+		});
 		tf_cardNum.setText("1002");
 		tf_cardNum.setBounds(310, 157, 144, 21);
 		contentPane.add(tf_cardNum);
@@ -81,6 +90,16 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		btn_clear = new JButton("更正");
 		btn_clear.setBounds(725, 386, 93, 23);
 		contentPane.add(btn_clear);
+		
+		JLabel label = new JLabel("请输入转入金额");
+		label.setBounds(161, 251, 144, 15);
+		contentPane.add(label);
+		
+		tf_cash = new JTextField();
+		tf_cash.setText("1");
+		tf_cash.setColumns(10);
+		tf_cash.setBounds(310, 248, 144, 21);
+		contentPane.add(tf_cash);
 		btn_clear.addActionListener(this);
 	}
 	
@@ -112,5 +131,4 @@ public class CardTransfersView extends JFrame implements ActionListener {
 			tf_cardNum.setText("");
 		}
 	}
-
 }
