@@ -50,7 +50,7 @@ public class UserLoginFrame extends JFrame {
 		setResizable(false);
 		setTitle("登录界面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 501, 360);
+		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -58,11 +58,11 @@ public class UserLoginFrame extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("卡号：");
 		lblNewLabel.setFont(new Font("幼圆", Font.BOLD, 14));
-		lblNewLabel.setBounds(125, 84, 54, 15);
+		lblNewLabel.setBounds(280, 146, 54, 15);
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.setBounds(189, 77, 177, 30);
+		textField.setBounds(344, 139, 177, 30);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		textField.setText("1001");
@@ -77,12 +77,12 @@ public class UserLoginFrame extends JFrame {
 			}
 		});
 		passwordField.setText("1");
-		passwordField.setBounds(189, 140, 177, 30);
+		passwordField.setBounds(344, 202, 177, 30);
 		contentPane.add(passwordField);
 		
 		JLabel lblNewLabel_1 = new JLabel("密码：");
 		lblNewLabel_1.setFont(new Font("幼圆", Font.BOLD, 14));
-		lblNewLabel_1.setBounds(125, 147, 54, 15);
+		lblNewLabel_1.setBounds(280, 209, 54, 15);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnNewButton = new JButton("登陆");
@@ -91,7 +91,7 @@ public class UserLoginFrame extends JFrame {
 				doLogin();
 			}
 		});
-		btnNewButton.setBounds(125, 227, 93, 30);
+		btnNewButton.setBounds(280, 289, 93, 30);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("退出");
@@ -100,7 +100,7 @@ public class UserLoginFrame extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton_1.setBounds(273, 227, 93, 30);
+		btnNewButton_1.setBounds(428, 289, 93, 30);
 		contentPane.add(btnNewButton_1);
 	}
 	
