@@ -13,16 +13,18 @@ public class CardManager {
 	private final static String TB_CARD = "card";
 //	private final static String TB_TRADE= "tradeinfo";
 //	private final static String TB_USER= "UserInfo";
-
+	private final static int NO_EXIT= -1;
+	
 	private String cardNum ;
 	private String cardPwd;
-	private String cardId;
+	private int cardId;
 	
 	private void testing(){
-		cardId = "1001";
-		cardNum = "1001";
+		setCardId(1);
+		setCardNum("1001");
 		cardPwd = "1";
 	}
+	
 	private CardManager() {
 		testing();
 	}
@@ -46,8 +48,8 @@ public class CardManager {
 			preSt.setString(2, password);
 			rs = preSt.executeQuery();
 			if (rs.next()) {
-				cardId = rs.getString("cardID");
-				cardNum = rs.getString("cardNum");
+				setCardId(rs.getInt("cardId"));
+				setCardNum(rs.getString("cardNum"));
 				cardPwd = rs.getString("password");
 //				System.out.println("登陆成功");
 				return true;
@@ -71,7 +73,23 @@ public class CardManager {
 		int cash = dbManager.queryCash();
 		System.out.println("存款: 旧款:"+cash+" 新款:"+(cash+money));
 		cash += money;
-		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardID = "+cardId;
+		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
+		try {
+			Statement st = conn.createStatement();
+			if( 0 != st.executeUpdate(sql) ){
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean saveCash(int otherCardId,int money) {
+		int cash = dbManager.queryCash(otherCardId);
+		cash += money;
+		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+otherCardId;
 		try {
 			Statement st = conn.createStatement();
 			if( 0 != st.executeUpdate(sql) ){
@@ -89,7 +107,7 @@ public class CardManager {
 		int cash = dbManager.queryCash();
 		System.out.println("取款: 旧款:"+cash+" 新款:"+(cash-money));
 		cash -= money;
-		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardID = "+cardId;
+		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
 		try {
 			Statement st = conn.createStatement();
 			if( 0 != st.executeUpdate(sql) ){
@@ -104,7 +122,7 @@ public class CardManager {
 	}
 	
 	public int queryCash() {
-		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardID = "+cardId;
+		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+getCardId();
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -114,7 +132,75 @@ public class CardManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return NO_EXIT;
+	}
+	public int queryCash(int otherCardId) {
+		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+otherCardId;
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return rs.getInt("cash");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return NO_EXIT;
+	}
+	public int getCardIdByCardNum(String cardNum){
+		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardNum = "+cardNum;
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return rs.getInt("cardId");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return NO_EXIT;
+	}
+	public boolean transfersCash(String othersCardNum,int money) {
+		int cash = dbManager.queryCash();
+		if(cash < money || othersCardNum == null){
+			return false;
+		}
+		int othersCardId = getCardIdByCardNum(othersCardNum);
+		if(othersCardId == NO_EXIT){
+			System.out.println("对方卡号不存在");
+			return false;
+		}
+		try {
+			conn.setAutoCommit(false);
+			takeCash(money);
+			saveCash(othersCardId,money);
+			conn.commit();			//提交事务
+			conn.setAutoCommit(true);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();	//事务回滚
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
+	public int getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(int cardId) {
+		this.cardId = cardId;
+	}
+
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
 }

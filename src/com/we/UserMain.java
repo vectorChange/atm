@@ -11,7 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.we.util.DateUtil;
 import com.we.util.MainImagePane;
+import com.we.view.CardDetailsView;
 import com.we.view.CardQueryView;
 import com.we.view.CardSaveView;
 import com.we.view.CardTakeView;
@@ -81,7 +83,8 @@ public class UserMain extends JFrame implements ActionListener{
 		btn_history = new JButton("记录查询");
 		btn_history.setBounds(10, 230, 93, 23);
 		mainImagePane.add(btn_history);
-		
+		btn_history.addActionListener(this);
+
 		btn_exit = new JButton("退出");
 		btn_exit.addActionListener(this);
 		btn_exit.setBounds(10, 345, 93, 23);
@@ -92,21 +95,21 @@ public class UserMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
 		if( btn == btn_query){
-			CardQueryView cardQueryView = new CardQueryView();
-			cardQueryView.setVisible(true);
+			new CardQueryView().setVisible(true);
 			dispose();
 		}else if(btn == btn_save){
-			CardSaveView cardSaveView = new CardSaveView();
-			cardSaveView.setVisible(true);
+			new CardSaveView().setVisible(true);
 			dispose();
 		}else if(btn == btn_take){
 			new CardTakeView().setVisible(true);
 			dispose();
 		}else if(btn == btn_transfers){
-			CardTransfersView cardTransfersView = new CardTransfersView();
-			cardTransfersView.setVisible(true);
+			new CardTransfersView().setVisible(true);;
 			dispose();
 		}else if(btn == btn_exit){
+			dispose();
+		}else if(btn == btn_history){
+			new CardDetailsView().setVisible(true);
 			dispose();
 		}
 	}

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,13 +18,9 @@ import javax.swing.border.EmptyBorder;
 import com.we.UserMain;
 import com.we.dao.CardManager;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.Window.Type;
-
+@SuppressWarnings("serial")
 public class UserLoginFrame extends JFrame {
 
-	private static final long serialVersionUID = 1509690724425252566L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;

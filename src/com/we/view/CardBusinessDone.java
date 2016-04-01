@@ -1,6 +1,7 @@
 package com.we.view;
 
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,7 +26,8 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 	private JLabel label;
 	private JLabel label_1;
 	private JLabel lb_money;
-
+	private Class<?extends JFrame> preClass = null;
+	private int successMoney = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +35,7 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CardBusinessDone frame = new CardBusinessDone(0);
+					CardBusinessDone frame = new CardBusinessDone(null,0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +47,10 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public CardBusinessDone(int money) {
+	public CardBusinessDone(Class<?extends JFrame> preClass, int money) {
+		this.preClass = preClass;
+		this.successMoney = money;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
@@ -53,28 +58,28 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		btn_continue = new JButton("继续取款");
-		btn_continue.setBounds(32, 191, 93, 23);
+		btn_continue = new JButton("继续操作");
+		btn_continue.setBounds(32, 326, 93, 23);
 		contentPane.add(btn_continue);
 		btn_continue.addActionListener(this);
 		
 		btn_showCash = new JButton("显示余额");
-		btn_showCash.setBounds(698, 133, 93, 23);
+		btn_showCash.setBounds(753, 145, 93, 23);
 		contentPane.add(btn_showCash);
 		btn_showCash.addActionListener(this);
 		
 		btn_print = new JButton("打印凭条");
-		btn_print.setBounds(698, 218, 93, 23);
+		btn_print.setBounds(753, 326, 93, 23);
 		contentPane.add(btn_print);
 		btn_print.addActionListener(this);
 		
 		btn_back = new JButton("回主菜单");
-		btn_back.setBounds(698, 308, 93, 23);
+		btn_back.setBounds(753, 474, 93, 23);
 		contentPane.add(btn_back);
 		btn_back.addActionListener(this);
 		
 		btn_exit = new JButton("退出");
-		btn_exit.setBounds(32, 308, 93, 23);
+		btn_exit.setBounds(32, 474, 93, 23);
 		contentPane.add(btn_exit);
 		
 		label = new JLabel("交易成功");
@@ -85,7 +90,7 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 		label_1.setBounds(267, 145, 72, 23);
 		contentPane.add(label_1);
 		
-		lb_money = new JLabel(money+"");
+		lb_money = new JLabel(successMoney+"");
 		lb_money.setBounds(349, 149, 54, 15);
 		contentPane.add(lb_money);
 		btn_exit.addActionListener(this);
@@ -100,6 +105,16 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 			dispose();
 		}else if(btn == btn_back){
 			new UserMain().setVisible(true);
+			dispose();
+		}else if(btn == btn_continue){
+			try {
+				preClass.newInstance().setVisible(true);
+				dispose();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}else if(btn == btn_showCash){
+			new CardQueryView().setVisible(true);
 			dispose();
 		}
 	}
