@@ -5,12 +5,12 @@ public class TradeInfo {
 	private int cardId;
 	private String tradeDate;
 	private int tradeType;
-	private int tradeMoney;
+	private double tradeMoney;
 	private int target;
 	
 	public TradeInfo(){}
 	public TradeInfo(int tradeId, int cardId, String tradeDate, int tradeType,
-			int tradeMoney, int target) {
+			double tradeMoney, int target) {
 		this.tradeId = tradeId;
 		this.cardId = cardId;
 		this.tradeDate = tradeDate;
@@ -42,10 +42,10 @@ public class TradeInfo {
 	public void setTradeType(int tradeType) {
 		this.tradeType = tradeType;
 	}
-	public int getTradeMoney() {
+	public double getTradeMoney() {
 		return tradeMoney;
 	}
-	public void setTradeMoney(int tradeMoney) {
+	public void setTradeMoney(double tradeMoney) {
 		this.tradeMoney = tradeMoney;
 	}
 	public int getTarget() {

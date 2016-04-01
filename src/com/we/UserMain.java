@@ -60,7 +60,7 @@ public class UserMain extends JFrame implements ActionListener{
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		
-		btn_query = new JButton("查询");
+		btn_query = new JButton("查询余额");
 		btn_query.setBounds(10, 121, 93, 23);
 		mainImagePane.add(btn_query);
 		btn_query.addActionListener(this);

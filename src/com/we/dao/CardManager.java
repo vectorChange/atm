@@ -69,8 +69,8 @@ public class CardManager {
 		return false;
 	}
 
-	public boolean saveCash(int money) {
-		int cash = dbManager.queryCash();
+	public boolean saveCash(double money) {
+		double cash = dbManager.queryCash();
 		System.out.println("存款: 旧款:"+cash+" 新款:"+(cash+money));
 		cash += money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
@@ -86,8 +86,8 @@ public class CardManager {
 		}
 		return false;
 	}
-	public boolean saveCash(int otherCardId,int money) {
-		int cash = dbManager.queryCash(otherCardId);
+	public boolean saveCash(int otherCardId,double money) {
+		double cash = dbManager.queryCash(otherCardId);
 		cash += money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+otherCardId;
 		try {
@@ -103,8 +103,8 @@ public class CardManager {
 		return false;
 	}
 	
-	public boolean takeCash(int money) {
-		int cash = dbManager.queryCash();
+	public boolean takeCash(double money) {
+		double cash = dbManager.queryCash();
 		System.out.println("取款: 旧款:"+cash+" 新款:"+(cash-money));
 		cash -= money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
@@ -121,26 +121,26 @@ public class CardManager {
 		return false;
 	}
 	
-	public int queryCash() {
+	public double queryCash() {
 		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+getCardId();
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				return rs.getInt("cash");
+				return rs.getDouble("cash");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return NO_EXIT;
 	}
-	public int queryCash(int otherCardId) {
+	public double queryCash(int otherCardId) {
 		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+otherCardId;
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				return rs.getInt("cash");
+				return rs.getDouble("cash");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -160,9 +160,9 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
-	public boolean transfersCash(String othersCardNum,int money) {
-		int cash = dbManager.queryCash();
-		if(cash < money || othersCardNum == null){
+	public boolean transfersCash(String othersCardNum,double money) {
+		double cash = dbManager.queryCash();
+		if( Double.compare(cash, money) < 0 || othersCardNum == null || othersCardNum.equals("")){
 			return false;
 		}
 		int othersCardId = getCardIdByCardNum(othersCardNum);

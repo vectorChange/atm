@@ -46,7 +46,7 @@ public class CardQueryView extends JFrame  implements ActionListener{
 
 	private void initData() {
 		
-		int cash = cardManager.queryCash();
+		double cash = cardManager.queryCash();
 		lb_cash.setText(cash+"");
 		lb_preCash.setText(cash+"");
 	}

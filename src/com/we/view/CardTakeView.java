@@ -14,6 +14,12 @@ import javax.swing.border.EmptyBorder;
 import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
+import com.we.util.IntegerLimitedKeyListener;
+import com.we.util.TextUtil;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.Color;
 
 public class CardTakeView extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -8589646050175082423L;
@@ -27,6 +33,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 	TradeManager tradeManager = TradeManager.getInstance();	
 	CardManager dbManager = CardManager.getInstance();
 	private JButton btn_100;
+	private JLabel lb_error;
 	/**
 	 * Launch the application.
 	 */
@@ -93,9 +100,25 @@ public class CardTakeView extends JFrame implements ActionListener{
 		contentPane.add(label_1);
 		
 		tf_num = new JTextField();
+		tf_num.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				lb_error.setText("");
+				lb_error.setVisible(false);
+				// 使错误信息消失
+			}
+		});
+		tf_num.addKeyListener(new IntegerLimitedKeyListener());
 		tf_num.setColumns(10);
 		tf_num.setBounds(350, 120, 93, 22);
 		contentPane.add(tf_num);
+		
+		lb_error = new JLabel("错误提示");
+		lb_error.setForeground(Color.RED);
+		lb_error.setBackground(Color.RED);
+		lb_error.setBounds(340, 295, 252, 56);
+		lb_error.setVisible(false);
+		contentPane.add(lb_error);
 		
 	}
 	
@@ -116,7 +139,12 @@ public class CardTakeView extends JFrame implements ActionListener{
 			}else if(btn == btn_100){
 				subNum = 100;
 			}else if(btn == btn_sure){
-			    subNum = Integer.parseInt(tf_num.getText());
+				String verifyRes = TextUtil.verifyTextNum(tf_num.getText());
+				if(!verifyRes.equals(TextUtil.TEXT_OK)){
+					TextUtil.setErrorTxt(lb_error,verifyRes);
+					return;
+				}
+				subNum = Integer.parseInt(tf_num.getText());
 			}
 			if(dbManager.takeCash(subNum)){
 				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TAKE, subNum, TradeManager.TARGET_NULL)){

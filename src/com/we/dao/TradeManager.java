@@ -43,7 +43,7 @@ public class TradeManager {
 	 * @param target 交易对象Id，如果是转账则填id，否则填 TARGET_NULL
 	 * @return 添加成功与否
 	 */
-	public boolean insertTrade(int tradeType, int tradeMoney, int target) {
+	public boolean insertTrade(int tradeType, double tradeMoney, int target) {
 		String date = DateUtil.getDateTime();
 		String sql = "INSERT INTO "+TB_TRADE+"(cardId,tradeDate,tradeType,tradeMoney,target) VALUES( "
 				+ getCardId() +",'"+ date+"',"+tradeType+","+tradeMoney+","+target+" )";
@@ -76,7 +76,7 @@ public class TradeManager {
 				tradeInfo.setCardId(rs.getInt("cardId"));
 				tradeInfo.setTradeDate(rs.getString("tradeDate").substring(0,16));
 				tradeInfo.setTradeType(rs.getInt("tradeType"));
-				tradeInfo.setTradeMoney(rs.getInt("tradeMoney"));
+				tradeInfo.setTradeMoney(rs.getDouble("tradeMoney"));
 				tradeInfo.setTarget(rs.getInt("target"));
 				list.add(tradeInfo);
 			}
