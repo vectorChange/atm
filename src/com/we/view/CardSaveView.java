@@ -2,6 +2,7 @@ package com.we.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -20,6 +21,7 @@ import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.util.IntegerLimitedKeyListener;
 import com.we.util.TextUtil;
+import com.we.util.TimerUtil;
 
 public class CardSaveView extends JFrame implements ActionListener{
 
@@ -64,37 +66,37 @@ public class CardSaveView extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		btn_100 = new JButton("100");
-		btn_100.setBounds(10, 103, 93, 23);
+		ImageIcon icon ;
+		icon = new ImageIcon("res\\btn_100.png");
+		btn_100 = new JButton(icon);
+		btn_100.setBounds(10, 103, icon.getIconWidth(), icon.getIconHeight());
 		contentPane.add(btn_100);
+		btn_100.setContentAreaFilled(false);
+		btn_100.setBorderPainted(false);
 		btn_100.addActionListener(this);
 		
-
+		icon = new ImageIcon("res\\btn_300.png");
 		btn_300 = new JButton(new ImageIcon("res\\btn_300.png"));
-		btn_300.setBounds(5, 211, 104, 36);
+		btn_300.setBounds(5, 211, icon.getIconWidth(), icon.getIconHeight());
 		btn_300.setContentAreaFilled(false);
 		btn_300.setBorderPainted(false);
 		contentPane.add(btn_300);
 		btn_300.addActionListener(this);
 		
-		
-		btn_500 = new JButton(new ImageIcon("res\\btn_500.png"));
-		btn_500.setBounds(738, 85, 104, 36);
+		icon = new ImageIcon("res\\btn_500.png");
+		btn_500 = new JButton(icon);
+		btn_500.setBounds(738, 85, icon.getIconWidth(), icon.getIconHeight());
 		btn_500.setContentAreaFilled(false);
 		btn_500.setBorderPainted(false);
 		contentPane.add(btn_500);
 		btn_500.addActionListener(this);
 		
-		
-//		JButton button = new JButton(new ImageIcon("res\\btn_500.png"));
-//		button.setBounds(10, 210, 127, 41);
-//		button.setContentAreaFilled(false);
-//		button.setBorderPainted(false);
-//		contentPane.add(button);
-		
-		btn_1000 = new JButton("1000");
-		btn_1000.setBounds(749, 211, 93, 23);
+		icon = new ImageIcon("res\\btn_1000.png");
+		btn_1000 = new JButton(icon);
+		btn_1000.setBounds(749, 211,icon.getIconWidth(), icon.getIconHeight());
 		contentPane.add(btn_1000);
+		btn_1000.setContentAreaFilled(false);
+		btn_1000.setBorderPainted(false);
 		btn_1000.addActionListener(this);
 
 		btn_sure = new JButton("确定");
@@ -112,7 +114,6 @@ public class CardSaveView extends JFrame implements ActionListener{
 		tf_num.setBounds(350, 120, 93, 22);
 		contentPane.add(tf_num);
 		tf_num.setColumns(10);
-		tf_num.setText("123");
 		tf_num.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -134,6 +135,15 @@ public class CardSaveView extends JFrame implements ActionListener{
 		lb_error.setBounds(340, 295, 252, 56);
 		lb_error.setVisible(false);
 		contentPane.add(lb_error);
+		
+		JLabel lb_rest_time = new JLabel("剩余");
+		lb_rest_time.setForeground(SystemColor.textHighlight);
+		lb_rest_time.setBackground(Color.WHITE);
+		lb_rest_time.setBounds(365, 10, 54, 15);
+		contentPane.add(lb_rest_time);
+		
+		TimerUtil.stopTimeCount();
+		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
 	}
 
 	@Override
@@ -143,6 +153,7 @@ public class CardSaveView extends JFrame implements ActionListener{
 		if(btn == btn_back){
 			new UserMain().setVisible(true);
 			dispose();
+			
 		}else{
 			if(btn == btn_300){
 				addNum = 300;
@@ -169,6 +180,7 @@ public class CardSaveView extends JFrame implements ActionListener{
 			    }
 			}else{
 				System.err.println("存款失败");
+				
 			}
         }
 	}

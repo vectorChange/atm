@@ -4,40 +4,39 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument.Content;
+
 public class FloatLimitedKeyListener  extends KeyAdapter  {
 	private String canKey = "0123456789.";
-	private int dotLoc = -1;
-	
-//	@Override
-//	public void keyPressed(KeyEvent e) {
-//		int code=e.getKeyCode();
-//		if(code==KeyEvent.VK_DELETE && ){
-//			dotLoc = -1;
-//		}
-//		super.keyPressed(e);
-//	}
-
+	private String text = "";
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char key = e.getKeyChar();
+		
 		boolean yes = false;
 		for (int i = 0; i < canKey.length(); i++) {
 			if( key == canKey.charAt(i)){
 				if(key == '.'){
-					if(dotLoc == -1){
-						dotLoc = i;
-					}else{
-						break;
+					if(text.indexOf(key) != -1){
+						e.consume();
+						return;
 					}
 				}
 				yes = true;
-				break;
 			}
+		}
+		if((int)key == 8){
+			if( text.length() >= 1){
+				text = text.substring(0, text.length()-1);
+			}
+			return;
 		}
 		if(!yes){
 			e.consume();
+		}else if(yes){
+			text += key;
 		}
 	}
-
 }

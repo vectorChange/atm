@@ -18,9 +18,13 @@ import com.we.bean.TradeInfo;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.dao.UserManager;
+import com.we.util.DateUtil;
+import com.we.util.TimerUtil;
 
 @SuppressWarnings("serial")
 public class CardDetailsView extends JFrame implements ActionListener{
+
+	private static final int HISTORY_DAY_LIMIT = -30*3;
 
 	private JPanel contentPane;
 	
@@ -68,16 +72,15 @@ public class CardDetailsView extends JFrame implements ActionListener{
 		contentPane.add(btn_back);
 		btn_back.addActionListener(this);
 		
-		JLabel label = new JLabel("历史交易明细");
+		JLabel label = new JLabel("近三个月交易明细");
 		label.setBounds(383, 77, 121, 23);
 		contentPane.add(label);
 		
-		
-		ArrayList<TradeInfo>dataList = tradeManager.queryTradeInfos();
+		String threeMonthBefore = DateUtil.addDay(DateUtil.getDate(), HISTORY_DAY_LIMIT);
+		ArrayList<TradeInfo>dataList = tradeManager.queryRecentTradeInfos(DateUtil.addDay(DateUtil.getDate(),1),threeMonthBefore);
 		String rowData[][] = new String[100][5];
 		Object columnNames[] = { "序号", "交易时间", "交易类型", "交易金额","转账对象"};
 		for (int i = 0; i < dataList.size(); i++) {
-			
 			rowData[i][0] = String.valueOf(i+1);
 			rowData[i][1] = dataList.get(i).getTradeDate();
 			rowData[i][2] = getShowType(dataList.get(i).getTradeType());
@@ -96,6 +99,7 @@ public class CardDetailsView extends JFrame implements ActionListener{
 		table.setBounds(168, 161, 372, 1600);
 		
 //		dataList.
+		TimerUtil.stopTimeCount();	
 	}
 	
 	private String getShowTarget(int targetId) {
@@ -120,7 +124,7 @@ public class CardDetailsView extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
 		if(btn == btn_exit){
-			dispose();
+			System.exit(0);
 		}else if(btn == btn_back){
 			 new UserMain().setVisible(true);
 	         dispose();

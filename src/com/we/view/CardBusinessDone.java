@@ -1,7 +1,8 @@
 package com.we.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Frame;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
+import com.we.util.TimerUtil;
 
 
 public class CardBusinessDone extends JFrame implements ActionListener {
@@ -28,6 +30,7 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 	private JLabel lb_money;
 	private Class<?extends JFrame> preClass = null;
 	private int successMoney = 0;
+	private JLabel lb_rest_time;
 	/**
 	 * Launch the application.
 	 */
@@ -93,9 +96,16 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 		lb_money = new JLabel(successMoney+"");
 		lb_money.setBounds(349, 149, 54, 15);
 		contentPane.add(lb_money);
+		
+		lb_rest_time = new JLabel("剩余");
+		lb_rest_time.setForeground(SystemColor.textHighlight);
+		lb_rest_time.setBackground(Color.WHITE);
+		lb_rest_time.setBounds(309, 10, 54, 15);
+		contentPane.add(lb_rest_time);
 		btn_exit.addActionListener(this);
 		
-		
+		TimerUtil.stopTimeCount();
+		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
 	}
 
 	@Override
@@ -116,6 +126,8 @@ public class CardBusinessDone extends JFrame implements ActionListener {
 		}else if(btn == btn_showCash){
 			new CardQueryView().setVisible(true);
 			dispose();
+		}else if(btn == btn_print){
+			
 		}
 	}
 

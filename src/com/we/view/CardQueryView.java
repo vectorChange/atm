@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
+import com.we.util.TimerUtil;
 
 
 public class CardQueryView extends JFrame  implements ActionListener{
@@ -136,7 +137,7 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		lb_preCash.setBounds(453, 296, 70, 15);
 		contentPane.add(lb_preCash);
 		
-		
+		TimerUtil.stopTimeCount();
 		initData();
 	}
 

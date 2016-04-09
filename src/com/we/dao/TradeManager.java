@@ -86,6 +86,36 @@ public class TradeManager {
 		}
 		return null;
 	}
+	
+	/**
+	 * 查询指定卡号的指定日期段内的所有交易记录
+	 * @param beforeThisDate  date < beforeThisDate
+	 * @param afterThisDate date >= afterThisDate
+	 * @return
+	 */
+	public ArrayList<TradeInfo> queryRecentTradeInfos(String beforeThisDate,String afterThisDate) {
+		ArrayList<TradeInfo>list = new ArrayList<TradeInfo>();
+		String sql = "SELECT * FROM "+TB_TRADE + " WHERE cardId = "+getCardId()
+				+ " and tradeDate between '"+ afterThisDate +"' and '"+beforeThisDate+"'";
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				TradeInfo tradeInfo = new TradeInfo();
+				tradeInfo.setTradeId(rs.getInt("tradeId"));
+				tradeInfo.setCardId(rs.getInt("cardId"));
+				tradeInfo.setTradeDate(rs.getString("tradeDate").substring(0,16));
+				tradeInfo.setTradeType(rs.getInt("tradeType"));
+				tradeInfo.setTradeMoney(rs.getDouble("tradeMoney"));
+				tradeInfo.setTarget(rs.getInt("target"));
+				list.add(tradeInfo);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public int getCardId() {
 		return cardId;

@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -19,6 +20,9 @@ import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.util.FloatLimitedKeyListener;
 import com.we.util.TextUtil;
+import com.we.util.TimerUtil;
+
+import java.awt.SystemColor;
 
 public class CardTransfersView extends JFrame implements ActionListener {
 
@@ -33,6 +37,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 	private JTextField tf_num;
 	private JLabel lb_error;
 	private FloatLimitedKeyListener floatLimitedKeyListener;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -84,7 +89,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		
 		btn_back = new JButton("返回主菜单");
 		btn_back.addActionListener(this);
-		btn_back.setBounds(33, 492, 117, 23);
+		btn_back.setBounds(31, 492, 117, 23);
 		contentPane.add(btn_back);
 		btn_back.addActionListener(this);
 		
@@ -121,13 +126,23 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		lb_error.setBounds(306, 401, 211, 127);
 		lb_error.setVisible(false);
 		contentPane.add(lb_error);
+		
+		JLabel lb_rest_time = new JLabel("剩余");
+		lb_rest_time.setForeground(SystemColor.textHighlight);
+		lb_rest_time.setBackground(Color.WHITE);
+		lb_rest_time.setBounds(351, 10, 54, 15);
+		contentPane.add(lb_rest_time);
 		btn_clear.addActionListener(this);
+		
+		TimerUtil.stopTimeCount();
+		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
 		if(btn == btn_back){
+			System.out.println(".");
 			new UserMain().setVisible(true);
 			dispose();
 		}else if(btn==btn_sure){
@@ -154,7 +169,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, tradeCash, targetCardId)){
 					System.out.println("插入转账记录成功");
 				}else{
-					System.out.println("插入转账记录失败");
+					JOptionPane.showMessageDialog(null, "添加交易记录失败", "转账成功，但添加交易记录失败", JOptionPane.WARNING_MESSAGE ); 
 				}
 				System.out.println("转账成功");
 			}else{

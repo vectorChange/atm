@@ -1,9 +1,16 @@
 package com.we.util;
 
+//import java.util.TimerTask;
+import java.util.TimerTask;
+
+import javax.swing.Timer;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class TextUtil {
-	public static final String TEXT_OK = "TEXT_OK";
+	public static final String TEXT_OK = "TEXT_OK";	
+	private static final int OP_TIME_LIMIT = 5;
+	private static final long DELAY_INTERVAL = 1000;
 	public static String verifyTextNum(String txt) {
 		if(txt.equals("")){
 			return "金额必填";

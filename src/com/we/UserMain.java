@@ -13,6 +13,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.util.DateUtil;
 import com.we.util.MainImagePane;
+import com.we.util.TextUtil;
+import com.we.util.TimerUtil;
 import com.we.view.CardDetailsView;
 import com.we.view.CardQueryView;
 import com.we.view.CardSaveView;
@@ -89,6 +91,7 @@ public class UserMain extends JFrame implements ActionListener{
 		btn_exit.addActionListener(this);
 		btn_exit.setBounds(10, 345, 93, 23);
 		mainImagePane.add(btn_exit);
+		TimerUtil.stopTimeCount();
 	}
 
 	@Override
@@ -103,6 +106,7 @@ public class UserMain extends JFrame implements ActionListener{
 		}else if(btn == btn_take){
 			new CardTakeView().setVisible(true);
 			dispose();
+			
 		}else if(btn == btn_transfers){
 			new CardTransfersView().setVisible(true);;
 			dispose();

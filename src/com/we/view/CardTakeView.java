@@ -1,8 +1,12 @@
 package com.we.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,13 +20,11 @@ import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.util.IntegerLimitedKeyListener;
 import com.we.util.TextUtil;
-
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.Color;
+import com.we.util.TimerUtil;
 
 public class CardTakeView extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -8589646050175082423L;
+
 	private JPanel contentPane;
 	private JTextField tf_num;
 	private JButton btn_sure;
@@ -50,6 +52,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 		});
 	}
 
+	
 	/**
 	 * Create the frame.
 	 */
@@ -120,6 +123,15 @@ public class CardTakeView extends JFrame implements ActionListener{
 		lb_error.setVisible(false);
 		contentPane.add(lb_error);
 		
+		JLabel lb_rest_time = new JLabel("剩余");
+		lb_rest_time.setBackground(Color.WHITE);
+		lb_rest_time.setForeground(SystemColor.textHighlight);
+		lb_rest_time.setBounds(365, 10, 54, 15);
+		contentPane.add(lb_rest_time);
+		
+		//计时
+		TimerUtil.stopTimeCount();
+		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
 	}
 	
 	@Override
@@ -154,7 +166,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 			        System.err.println("取款失败");
 			    }
 			}else{
-				System.err.println("取款失败");
+				System.err.println("取款失败，余额不足");
 			}
         }
 	}

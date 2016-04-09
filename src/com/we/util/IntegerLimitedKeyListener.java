@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class IntegerLimitedKeyListener extends KeyAdapter  {
-	private String canKey = "0123456789";
+	public static String canKey = "0123456789";
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char key = e.getKeyChar();
