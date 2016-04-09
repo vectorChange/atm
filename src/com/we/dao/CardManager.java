@@ -11,6 +11,10 @@ public class CardManager {
 	private static Connection conn = null;
 	private static CardManager dbManager = null;
 	private final static String TB_CARD = "card";
+	public final static String CARD_STATE_NORMAL = "正常";
+	public final static String CARD_STATE_FROZEN = "冻结";
+	public final static String CARD_STATE_LOSS = "挂失";
+	public final static String CARD_STATE_CLOSED = "注销";
 //	private final static String TB_TRADE= "tradeinfo";
 //	private final static String TB_USER= "UserInfo";
 	private final static int NO_EXIT= -1;
@@ -37,6 +41,28 @@ public class CardManager {
 		return dbManager;
 	}
 
+	public String queryCardState(String usename) {
+		PreparedStatement preSt = null;
+		ResultSet rs = null;
+		String sql = "select * from " + TB_CARD
+			+ " where cardNum = "+usename;
+		try{
+			Statement st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			if (rs.next()) {
+				if(rs.getBoolean("closed")){
+					return CARD_STATE_CLOSED;
+				}else if(rs.getBoolean("frozen")){
+					return CARD_STATE_FROZEN;
+				}else if(rs.getBoolean("loss")){
+					return CARD_STATE_LOSS;
+				}
+			}
+		}catch(Exception e){
+			return null;
+		}
+		return CARD_STATE_NORMAL;
+	}
 	public boolean queryLogin(String usename, String password) {
 		PreparedStatement preSt = null;
 		ResultSet rs = null;
@@ -69,8 +95,8 @@ public class CardManager {
 		return false;
 	}
 
-	public boolean saveCash(int money) {
-		int cash = dbManager.queryCash();
+	public boolean saveCash(double money) {
+		double cash = dbManager.queryCash();
 		System.out.println("存款: 旧款:"+cash+" 新款:"+(cash+money));
 		cash += money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
@@ -86,8 +112,8 @@ public class CardManager {
 		}
 		return false;
 	}
-	public boolean saveCash(int otherCardId,int money) {
-		int cash = dbManager.queryCash(otherCardId);
+	public boolean saveCash(int otherCardId,double money) {
+		double cash = dbManager.queryCash(otherCardId);
 		cash += money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+otherCardId;
 		try {
@@ -103,9 +129,11 @@ public class CardManager {
 		return false;
 	}
 	
-	public boolean takeCash(int money) {
-		int cash = dbManager.queryCash();
-		System.out.println("取款: 旧款:"+cash+" 新款:"+(cash-money));
+	public boolean takeCash(double money) {
+		double cash = dbManager.queryCash();
+		if(cash - money < 0.0){
+			return false;
+		}
 		cash -= money;
 		String sql = "UPDATE "+TB_CARD+" SET cash= "+ cash+" WHERE cardId = "+getCardId();
 		try {
@@ -121,26 +149,26 @@ public class CardManager {
 		return false;
 	}
 	
-	public int queryCash() {
+	public double queryCash() {
 		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+getCardId();
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				return rs.getInt("cash");
+				return rs.getDouble("cash");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return NO_EXIT;
 	}
-	public int queryCash(int otherCardId) {
+	public double queryCash(int otherCardId) {
 		String sql = "SELECT * FROM "+TB_CARD + " WHERE cardId = "+otherCardId;
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				return rs.getInt("cash");
+				return rs.getDouble("cash");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -160,9 +188,9 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
-	public boolean transfersCash(String othersCardNum,int money) {
-		int cash = dbManager.queryCash();
-		if(cash < money || othersCardNum == null){
+	public boolean transfersCash(String othersCardNum,double money) {
+		double cash = dbManager.queryCash();
+		if( Double.compare(cash, money) < 0 || othersCardNum == null || othersCardNum.equals("")){
 			return false;
 		}
 		int othersCardId = getCardIdByCardNum(othersCardNum);

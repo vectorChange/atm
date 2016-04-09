@@ -43,7 +43,7 @@ public class TradeManager {
 	 * @param target 交易对象Id，如果是转账则填id，否则填 TARGET_NULL
 	 * @return 添加成功与否
 	 */
-	public boolean insertTrade(int tradeType, int tradeMoney, int target) {
+	public boolean insertTrade(int tradeType, double tradeMoney, int target) {
 		String date = DateUtil.getDateTime();
 		String sql = "INSERT INTO "+TB_TRADE+"(cardId,tradeDate,tradeType,tradeMoney,target) VALUES( "
 				+ getCardId() +",'"+ date+"',"+tradeType+","+tradeMoney+","+target+" )";
@@ -76,7 +76,37 @@ public class TradeManager {
 				tradeInfo.setCardId(rs.getInt("cardId"));
 				tradeInfo.setTradeDate(rs.getString("tradeDate").substring(0,16));
 				tradeInfo.setTradeType(rs.getInt("tradeType"));
-				tradeInfo.setTradeMoney(rs.getInt("tradeMoney"));
+				tradeInfo.setTradeMoney(rs.getDouble("tradeMoney"));
+				tradeInfo.setTarget(rs.getInt("target"));
+				list.add(tradeInfo);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 查询指定卡号的指定日期段内的所有交易记录
+	 * @param beforeThisDate  date < beforeThisDate
+	 * @param afterThisDate date >= afterThisDate
+	 * @return
+	 */
+	public ArrayList<TradeInfo> queryRecentTradeInfos(String beforeThisDate,String afterThisDate) {
+		ArrayList<TradeInfo>list = new ArrayList<TradeInfo>();
+		String sql = "SELECT * FROM "+TB_TRADE + " WHERE cardId = "+getCardId()
+				+ " and tradeDate between '"+ afterThisDate +"' and '"+beforeThisDate+"'";
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				TradeInfo tradeInfo = new TradeInfo();
+				tradeInfo.setTradeId(rs.getInt("tradeId"));
+				tradeInfo.setCardId(rs.getInt("cardId"));
+				tradeInfo.setTradeDate(rs.getString("tradeDate").substring(0,16));
+				tradeInfo.setTradeType(rs.getInt("tradeType"));
+				tradeInfo.setTradeMoney(rs.getDouble("tradeMoney"));
 				tradeInfo.setTarget(rs.getInt("target"));
 				list.add(tradeInfo);
 			}

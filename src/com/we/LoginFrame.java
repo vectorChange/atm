@@ -1,4 +1,4 @@
-package com.we.view;
+package com.we;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -11,6 +11,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.we.admin.AdminLoginView;
+import com.we.view.MyPanel;
+import com.we.view.UserLoginFrame;
 
 @SuppressWarnings("serial")
 public class LoginFrame extends JFrame implements ActionListener {
@@ -47,7 +49,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	// 初始化组件
 	private void initComponent() {
 		btnManager = new JButton("管理员");
-		btnNormal = new JButton("普通账号");
+		btnNormal = new JButton("用户");
 		btnNormal.setBounds(144, 55, 115, 37);
 		contentPane.add(btnNormal);
 		btnManager.setBounds(144, 147, 115, 37);
