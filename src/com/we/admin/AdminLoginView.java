@@ -117,7 +117,7 @@ public class AdminLoginView extends JFrame {
 			System.out.println("登陆成功");
 //			UserMain userMain = new UserMain();
 //			userMain.setVisible(true);
-			// 管理员的工作界面
+			new AdminMain().setVisible(true);
 			dispose();
 		} else {
 			System.out.println("登陆失败");

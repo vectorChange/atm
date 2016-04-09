@@ -1,7 +1,9 @@
 package com.we.admin;
 
-import java.awt.Color;
+import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,9 +13,36 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.we.admin.panel.PanelCreate;
+import com.we.admin.panel.PanelDel;
+import com.we.admin.panel.PanelFrozen;
+import com.we.admin.panel.PanelLost;
+import com.we.admin.panel.PanelQue;
+import com.we.admin.panel.PanelRec;
+
+/**
+ * 管理界面的Frame finish
+ * @author 梓扬
+ *
+ */
+@SuppressWarnings("serial")
 public class AdminMain extends JFrame {
 
 	private JPanel contentPane;
+	private JMenuBar menu_bar;
+	private JMenu item_account;
+	private JMenu item_activity;
+	private JMenu item_query;
+	private JMenu item_right;
+	private JMenuItem sel_create;
+	private JMenuItem sel_del;
+	private JMenuItem sel_lost;
+	private JMenuItem sel_frozen;
+	private JMenuItem sel_scan;
+	private JMenuItem sel_acc;
+	private JMenuItem sel_change;
+	private CardLayout cl;
+
 
 	/**
 	 * Launch the application.
@@ -22,7 +51,8 @@ public class AdminMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					UIManager
+							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					AdminMain frame = new AdminMain();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -32,53 +62,104 @@ public class AdminMain extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public AdminMain() {
 		setTitle("管理界面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 555, 427);
-		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setForeground(Color.BLACK);
-		setJMenuBar(menuBar);
-		
-		JMenu menu = new JMenu("用户管理");
-		menuBar.add(menu);
-		
-		JMenuItem menuItem = new JMenuItem("开户功能");
-		menu.add(menuItem);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("销户功能");
-		menu.add(mntmNewMenuItem);
-		
-		JMenu menu_1 = new JMenu("账号活动");
-		menuBar.add(menu_1);
-		
-		JMenuItem menuItem_1 = new JMenuItem("挂失\\解挂失");
-		menu_1.add(menuItem_1);
-		
-		JMenuItem menuItem_2 = new JMenuItem("冻结\\解冻");
-		menu_1.add(menuItem_2);
-		
-		JMenu menu_2 = new JMenu("信息查询");
-		menuBar.add(menu_2);
-		
-		JMenuItem menuItem_3 = new JMenuItem("交易记录查询");
-		menu_2.add(menuItem_3);
-		
-		JMenuItem menuItem_4 = new JMenuItem("账号相关");
-		menu_2.add(menuItem_4);
-		
-		JMenu mnRight = new JMenu("权限");
-		menuBar.add(mnRight);
-		
-		JMenuItem menuItem_5 = new JMenuItem("更改密码");
-		mnRight.add(menuItem_5);
+		setBounds(100, 100, 600, 450);
 		contentPane = new JPanel();
+		cl = new CardLayout();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(cl);
+		initView();
+	}
+
+	/**
+	 * 初始化界面
+	 */
+	private void initView() {
+		addMenu();
+		addPanel();
+	}
+
+	/**
+	 * 添加panel到当前Frame中
+	 */
+	private void addPanel() {
+
+		contentPane.add(new PanelCreate(), PanelCreate.TAG);
+		sel_create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, "create");
+			}
+		});
+		contentPane.add(new PanelDel(), PanelDel.TAG);
+		sel_del.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, "delete");
+			}
+		});
+		contentPane.add(new PanelLost(), PanelLost.TAG);
+		sel_lost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelLost.TAG);
+			}
+		});
+		contentPane.add(new PanelFrozen(), PanelFrozen.TAG);
+		sel_frozen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelFrozen.TAG);
+			}
+		});
+		
+		contentPane.add(new PanelRec(), PanelRec.TAG);
+		sel_scan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelRec.TAG);
+			}
+		});
+		
+		contentPane.add(new PanelQue(), PanelQue.TAG);
+		sel_acc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelQue.TAG);
+			}
+		});
+	}
+	
+	/**
+	 * 添加Menu到Frame中
+	 */
+	private void addMenu() {
+		menu_bar = new JMenuBar();
+		setJMenuBar(menu_bar);
+
+		item_account = new JMenu("用户管理");
+		menu_bar.add(item_account);
+		item_activity = new JMenu("账号活动");
+		menu_bar.add(item_activity);
+		item_query = new JMenu("信息查询");
+		menu_bar.add(item_query);
+		item_right = new JMenu("权限");
+		menu_bar.add(item_right);
+
+		sel_create = new JMenuItem("开户功能");
+		item_account.add(sel_create);
+		sel_del = new JMenuItem("销户功能");
+		item_account.add(sel_del);
+
+		sel_lost = new JMenuItem("挂失\\解挂失");
+		item_activity.add(sel_lost);
+		sel_frozen = new JMenuItem("冻结\\解冻");
+		item_activity.add(sel_frozen);
+
+
+		sel_scan = new JMenuItem("交易记录查询");
+		item_query.add(sel_scan);
+		sel_acc = new JMenuItem("卡号查询");
+		item_query.add(sel_acc);
+
+		sel_change = new JMenuItem("更改密码");
+		item_right.add(sel_change);
 	}
 }
