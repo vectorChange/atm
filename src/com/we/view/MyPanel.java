@@ -36,7 +36,7 @@ public class MyPanel extends JPanel {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.add(new MyPanel(new File(".\\res\\main_bg.jpg")));
+		frame.add(new MyPanel(new File(".\\res\\bg.jpg")));
 		frame.setVisible(true);
 	}
 }

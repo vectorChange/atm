@@ -73,6 +73,7 @@ public class DateUtil {
 	 */
 	public static String getDate() {
 		try {
+			cale = Calendar.getInstance();
 			return sdf_date_format.format(cale.getTime());
 		} catch (Exception e) {
 			return "";
