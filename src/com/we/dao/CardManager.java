@@ -17,19 +17,19 @@ public class CardManager {
 	public final static String CARD_STATE_FROZEN = "冻结";
 	public final static String CARD_STATE_LOSS = "挂失";
 	public final static String CARD_STATE_CLOSED = "注销";
+	public final static int CARD_FLAG_FROZEN = 1;
+	public final static int CARD_FLAG_UNFROZEN = 0;
 	// private final static String TB_TRADE= "tradeinfo";
 	// private final static String TB_USER= "UserInfo";
 	private final static int NO_EXIT = -1;
 
 	private String cardNum;
-	private String cardPwd;
 	private int cardId;
 
 	// 测试用
 	private void testing() {
 		setCardId(1);
 		setCardNum("1001");
-		cardPwd = "1";
 	}
 
 	private CardManager() {
@@ -93,7 +93,6 @@ public class CardManager {
 			if (rs.next()) {
 				setCardId(rs.getInt("cardId"));
 				setCardNum(rs.getString("cardNum"));
-				cardPwd = rs.getString("password");
 				// System.out.println("登陆成功");
 				return true;
 			} else {

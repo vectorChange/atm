@@ -132,7 +132,7 @@ public class UserLoginFrame extends JFrame {
 				failLoginCnt ++;
 				if(failLoginCnt == FAIL_LOGIN_COUNT){
 					JOptionPane.showMessageDialog(null, "已三次登陆失败，银行卡被冻结", "冻结卡号", JOptionPane.ERROR_MESSAGE); 
-//					cardManager.
+					cardManager.frozenCard(cardManager.getCardNum(),CardManager.CARD_FLAG_FROZEN);
 				}else{
 					JOptionPane.showMessageDialog(null, "卡号不存在或密码不正确", "登陆失败", JOptionPane.ERROR_MESSAGE); 
 				}
