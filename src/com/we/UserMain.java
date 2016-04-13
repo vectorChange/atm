@@ -49,6 +49,7 @@ public class UserMain extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public UserMain() {
+		super("主界面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
