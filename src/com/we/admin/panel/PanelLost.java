@@ -6,11 +6,15 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class PanelLost extends JPanel{
 	public static final String TAG = "lost";
 	private JTextField tf_acc;
+	JRadioButton rb_lost;
+	JRadioButton rb_unlost;
 	private final ButtonGroup btn_group = new ButtonGroup();
 	public PanelLost() {
 		setLayout(null);
@@ -28,17 +32,23 @@ public class PanelLost extends JPanel{
 		add(tf_acc);
 		tf_acc.setColumns(10);
 		
-		JRadioButton rb_lost = new JRadioButton("挂失");
+		rb_lost = new JRadioButton("挂失");
 		btn_group.add(rb_lost);
 		rb_lost.setBounds(159, 180, 64, 23);
 		add(rb_lost);
 		
-		JRadioButton rb_unlost = new JRadioButton("解挂失");
+		rb_unlost = new JRadioButton("解挂失");
 		btn_group.add(rb_unlost);
 		rb_unlost.setBounds(342, 180, 64, 23);
 		add(rb_unlost);
 		
 		JButton btn_con = new JButton("确认");
+		btn_con.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int flag = rb_lost.isSelected() ? 1 : 0;
+				
+			}
+		});
 		btn_con.setBounds(159, 239, 93, 23);
 		add(btn_con);
 		

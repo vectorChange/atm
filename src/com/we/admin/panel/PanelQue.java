@@ -19,20 +19,20 @@ public class PanelQue extends JPanel {
 		setLayout(null);
 
 		JLabel lb_id = new JLabel("身份证号：");
-		lb_id.setBounds(10, 28, 82, 15);
+		lb_id.setBounds(10, 14, 82, 15);
 		add(lb_id);
 
 		tf_id = new JTextField();
-		tf_id.setBounds(75, 25, 180, 21);
+		tf_id.setBounds(75, 11, 180, 21);
 		add(tf_id);
 		tf_id.setColumns(10);
 
 		JButton btn_query = new JButton("查询");
-		btn_query.setBounds(466, 24, 93, 23);
+		btn_query.setBounds(466, 10, 93, 23);
 		add(btn_query);
 
 		JScrollPane scroll_panel = new JScrollPane();
-		scroll_panel.setBounds(10, 67, 549, 289);
+		scroll_panel.setBounds(10, 51, 549, 305);
 		add(scroll_panel);
 
 		table = new JTable();

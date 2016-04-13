@@ -7,41 +7,57 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
+import com.we.dao.CardManager;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 @SuppressWarnings("serial")
-public class PanelFrozen extends JPanel{
+public class PanelFrozen extends JPanel {
+	private CardManager cardManager = CardManager.getInstance();
 	public static final String TAG = "frozen";
 	private JTextField tf;
+	JRadioButton rb_frozen;
+	JRadioButton rb_unfro;
 	private final ButtonGroup btn_group = new ButtonGroup();
+
 	public PanelFrozen() {
 		setLayout(null);
-		
+
 		JLabel lab = new JLabel("冻结|解冻");
 		lab.setBounds(10, 10, 84, 15);
 		add(lab);
-		
+
 		JLabel lab_num = new JLabel("卡号：");
 		lab_num.setBounds(159, 126, 54, 15);
 		add(lab_num);
-		
+
 		tf = new JTextField();
 		tf.setBounds(223, 123, 183, 21);
 		add(tf);
 		tf.setColumns(10);
-		
-		JRadioButton rb_frozen = new JRadioButton("冻结");
+
+		rb_frozen = new JRadioButton("冻结");
 		btn_group.add(rb_frozen);
 		rb_frozen.setBounds(159, 180, 64, 23);
 		add(rb_frozen);
-		
-		JRadioButton rb_unfro = new JRadioButton("解冻");
+
+		rb_unfro = new JRadioButton("解冻");
 		btn_group.add(rb_unfro);
 		rb_unfro.setBounds(342, 180, 64, 23);
 		add(rb_unfro);
-		
+
 		JButton btn_con = new JButton("确认");
+		btn_con.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 传入卡号进行冻结
+				int flag = rb_frozen.isSelected() ? 1 : 0;
+				cardManager.frozenCard(tf.getText(), flag);
+			}
+		});
 		btn_con.setBounds(159, 239, 93, 23);
 		add(btn_con);
-		
+
 		JButton btn_reset = new JButton("重置");
 		btn_reset.setBounds(313, 239, 93, 23);
 		add(btn_reset);
