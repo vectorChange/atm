@@ -5,13 +5,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import com.we.dao.CardManager;
+import com.we.dao.UserManager;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 @SuppressWarnings("serial")
 public class PanelDel extends JPanel{
 	
 	public static final String TAG = "delete";
-	
+	private CardManager cardManager = CardManager.getInstance();
 	private JTextField tf_acc;
-	private JTextField tf_id;
 	public PanelDel() {
 		setLayout(null);
 		
@@ -20,29 +25,30 @@ public class PanelDel extends JPanel{
 		add(lb);
 		
 		tf_acc = new JTextField();
-		tf_acc.setBounds(227, 131, 158, 21);
+		tf_acc.setBounds(227, 141, 158, 21);
 		add(tf_acc);
 		tf_acc.setColumns(10);
 		
 		JLabel lb_acc = new JLabel("卡号：");
-		lb_acc.setBounds(163, 134, 54, 15);
+		lb_acc.setBounds(163, 144, 54, 15);
 		add(lb_acc);
 		
-		JLabel lb_id = new JLabel("身份证号：");
-		lb_id.setBounds(163, 172, 69, 15);
-		add(lb_id);
-		
-		tf_id = new JTextField();
-		tf_id.setBounds(227, 169, 158, 21);
-		add(tf_id);
-		tf_id.setColumns(10);
-		
 		JButton btn_con = new JButton("确认");
-		btn_con.setBounds(163, 228, 93, 23);
+		btn_con.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardManager.closeCard(tf_acc.getText());
+			}
+		});
+		btn_con.setBounds(163, 196, 93, 23);
 		add(btn_con);
 		
 		JButton btn_reset = new JButton("重置");
-		btn_reset.setBounds(292, 228, 93, 23);
+		btn_reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tf_acc.setText("");
+			}
+		});
+		btn_reset.setBounds(292, 196, 93, 23);
 		add(btn_reset);
 	}
 	

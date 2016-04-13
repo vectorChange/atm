@@ -19,6 +19,7 @@ import com.we.admin.panel.PanelFrozen;
 import com.we.admin.panel.PanelLost;
 import com.we.admin.panel.PanelQue;
 import com.we.admin.panel.PanelRec;
+import com.we.admin.panel.PanelSignUp;
 
 /**
  * 管理界面的Frame finish
@@ -41,6 +42,7 @@ public class AdminMain extends JFrame {
 	private JMenuItem sel_scan;
 	private JMenuItem sel_acc;
 	private JMenuItem sel_change;
+	private JMenuItem sel_user;
 	private CardLayout cl;
 
 
@@ -125,6 +127,13 @@ public class AdminMain extends JFrame {
 				cl.show(contentPane, PanelQue.TAG);
 			}
 		});
+		
+		contentPane.add(new PanelSignUp(), PanelSignUp.TAG);
+		sel_user.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelSignUp.TAG);
+			}
+		});
 	}
 	
 	/**
@@ -147,7 +156,9 @@ public class AdminMain extends JFrame {
 		item_account.add(sel_create);
 		sel_del = new JMenuItem("销户功能");
 		item_account.add(sel_del);
-
+		sel_user = new JMenuItem("注册用户");
+		item_account.add(sel_user);
+		
 		sel_lost = new JMenuItem("挂失\\解挂失");
 		item_activity.add(sel_lost);
 		sel_frozen = new JMenuItem("冻结\\解冻");

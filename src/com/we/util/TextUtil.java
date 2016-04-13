@@ -1,10 +1,6 @@
 package com.we.util;
 
 //import java.util.TimerTask;
-import java.util.TimerTask;
-
-import javax.swing.Timer;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class TextUtil {
