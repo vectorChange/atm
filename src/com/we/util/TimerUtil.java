@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class TimerUtil {
-	private static final int OP_TIME_LIMIT = 60;
+	private static final int OP_TIME_LIMIT = 3;
 	private static final long DELAY_INTERVAL = 1000;
 	public static TimerTask task ;
 	

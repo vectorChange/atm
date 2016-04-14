@@ -32,7 +32,7 @@ public class UserManager {
 		return dbManager;
 	}
 
-	public String getUserNameByCardId(int userId) {
+	public String getUserNameByUserId(int userId) {
 		String sql = "SELECT userName FROM " + TB_USER + " WHERE userId = "
 				+ userId;
 		try {

@@ -33,8 +33,8 @@ public class CardTransfersView extends JFrame implements ActionListener {
 	private JTextField tf_cardNum;
 	private MyButton btn_back;
 	private MyButton btn_sure;
-	CardManager cardManager = CardManager.getInstance();
-	TradeManager tradeManager = TradeManager.getInstance();
+	private CardManager cardManager = CardManager.getInstance();
+	private TradeManager tradeManager = TradeManager.getInstance();
 	private MyButton btn_clear;
 	private JTextField tf_num;
 	private JLabel lb_error;
@@ -174,9 +174,9 @@ public class CardTransfersView extends JFrame implements ActionListener {
 			if(cardManager.transfersCash(targetCardNum,tradeCash)){
 				int targetCardId = cardManager.getCardIdByCardNum(targetCardNum);
 				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, tradeCash, targetCardId)){
-					System.out.println("插入转账记录成功");
+//					System.out.println("插入转账记录成功");
 				}else{
-					JOptionPane.showMessageDialog(null, "添加交易记录失败", "转账成功，但添加交易记录失败", JOptionPane.WARNING_MESSAGE ); 
+					JOptionPane.showMessageDialog(null, "转账成功，但添加交易记录失败", "转账异常", JOptionPane.WARNING_MESSAGE ); 
 				}
 				new CardBusinessDone(getClass(), tradeCash).setVisible(true);
 			}else{

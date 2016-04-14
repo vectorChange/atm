@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -12,6 +11,7 @@ import java.awt.event.FocusEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -34,8 +34,8 @@ public class CardSaveView extends JFrame implements ActionListener{
 	private MyButton btn_300;
 	private MyButton btn_500; 
 	private MyButton btn_1000;
-	TradeManager tradeManager = TradeManager.getInstance();	
-	CardManager dbManager = CardManager.getInstance();
+	private TradeManager tradeManager = TradeManager.getInstance();	
+	private CardManager dbManager = CardManager.getInstance();
 	private MyButton btn_back;
 	private MyButton btn_sure;
 	private JLabel label_1;
@@ -168,11 +168,10 @@ public class CardSaveView extends JFrame implements ActionListener{
 					new CardBusinessDone(getClass(), addNum).setVisible(true);
 					dispose();
 				}else{
-			        System.err.println("存款失败");
+			        JOptionPane.showMessageDialog(null, "存款成功，但添加操作纪录失败", "存款异常", JOptionPane.INFORMATION_MESSAGE); 
 			    }
 			}else{
-				System.err.println("存款失败");
-				
+				JOptionPane.showMessageDialog(null, "存款失败", "存款失败", JOptionPane.ERROR_MESSAGE); 
 			}
         }
 	}

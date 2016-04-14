@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -34,8 +35,8 @@ public class CardTakeView extends JFrame implements ActionListener{
 	private MyButton btn_300;
 	private MyButton btn_1000;
 	private MyButton btn_500;
-	TradeManager tradeManager = TradeManager.getInstance();	
-	CardManager dbManager = CardManager.getInstance();
+	private TradeManager tradeManager = TradeManager.getInstance();	
+	private CardManager dbManager = CardManager.getInstance();
 	private MyButton btn_100;
 	private JLabel lb_error;
 	/**
@@ -168,10 +169,10 @@ public class CardTakeView extends JFrame implements ActionListener{
 					new CardBusinessDone(getClass(), subNum).setVisible(true);
 					dispose();
 				}else{
-			        System.err.println("取款失败");
+			        JOptionPane.showMessageDialog(null, "取款成功，但添加操作纪录失败", "取款异常", JOptionPane.WARNING_MESSAGE); 
 			    }
 			}else{
-				System.err.println("取款失败，余额不足");
+				JOptionPane.showMessageDialog(null, "余额不足", "取款失败", JOptionPane.ERROR_MESSAGE); 
 			}
         }
 	}

@@ -147,20 +147,16 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		MyButton btn = (MyButton)e.getSource();
 		// TODO Auto-generated method stub
 		if(btn == btn_back){
-			UserMain userMain = new UserMain();
-			userMain.setVisible(true);
+			new UserMain().setVisible(true);
 			dispose();
 		}else if(btn == btn_save){
-            CardSaveView cardSaveView = new CardSaveView();
-            cardSaveView.setVisible(true);
+            new CardSaveView().setVisible(true);
             dispose();
         }else if(btn == btn_take){
-            CardTakeView cardTakeView = new CardTakeView();
-            cardTakeView.setVisible(true);
+            new CardTakeView().setVisible(true);
             dispose();
         }else if(btn == btn_transfers){
-            CardTransfersView cardTransfersView = new CardTransfersView();
-            cardTransfersView.setVisible(true);
+        	new CardTransfersView().setVisible(true);
             dispose();
         }else if(btn == btn_history){
 	        new CardDetailsView().setVisible(true);
