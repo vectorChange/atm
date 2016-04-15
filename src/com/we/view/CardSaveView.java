@@ -20,7 +20,7 @@ import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.util.IntegerLimitedKeyListener;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
@@ -68,7 +68,7 @@ public class CardSaveView extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));	
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		
@@ -163,6 +163,21 @@ public class CardSaveView extends JFrame implements ActionListener{
 				}
 			    addNum = Integer.parseInt(tf_num.getText());
 			}
+			
+			//上限验证
+			int verify = dbManager.saveCashVerify(addNum);
+			switch (verify) {
+			case CardManager.ONE_TIME_LIMIT:
+				JOptionPane.showMessageDialog(null, "超过单次存款上限 "+CardManager.SAVE_LIMIT_TIME, "存款异常", JOptionPane.INFORMATION_MESSAGE); 
+				return;
+			case CardManager.ONE_DAY_LIMIT:
+				JOptionPane.showMessageDialog(null,  "超过单日存款上限 "+CardManager.SAVE_LIMIT_DAY, "存款异常", JOptionPane.INFORMATION_MESSAGE); 
+				return;
+			case CardManager.LIMIT_OK:
+			default:
+				break;
+			}
+			
 			if(dbManager.saveCash(addNum)){
 				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_SAVE, addNum, TradeManager.TARGET_NULL)){
 					new CardBusinessDone(getClass(), addNum).setVisible(true);

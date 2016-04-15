@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 
@@ -65,7 +64,7 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		

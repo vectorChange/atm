@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.util.IntegerLimitedKeyListener;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 
@@ -62,7 +62,7 @@ public class UserLoginFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		
@@ -75,7 +75,6 @@ public class UserLoginFrame extends JFrame {
 		tf_acc.setBounds(344, 139, 177, 30);
 		mainImagePane.add(tf_acc);
 		tf_acc.setColumns(10);
-		tf_acc.setText("1001");
 		tf_acc.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_pwd = new JPasswordField();

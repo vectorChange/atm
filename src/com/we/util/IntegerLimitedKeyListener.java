@@ -2,7 +2,10 @@ package com.we.util;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+/**
+ * 限制只能输入正整数
+ * @author xiaoguang
+ */
 public class IntegerLimitedKeyListener extends KeyAdapter  {
 	public static String canKey = "0123456789";
 	@Override

@@ -1,7 +1,6 @@
 package com.we.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,7 @@ import com.we.util.DateUtil;
 public class CardManager {
 	private static Connection conn = null;
 	private static CardManager dbManager = null;
+	private static TradeManager tradeManager = null;
 	private final static String TB_CARD = "card";
 	public final static String CARD_STATE_NORMAL = "正常";
 	public final static String CARD_STATE_FROZEN = "冻结";
@@ -20,7 +20,16 @@ public class CardManager {
 	public final static int CARD_FLAG_FROZEN = 1;
 	public final static int CARD_FLAG_UNFROZEN = 0;
 	public final static int NO_EXIT = -1;
-
+	
+	public final static int SAVE_LIMIT_TIME = 10000;
+	public final static int SAVE_LIMIT_DAY = 50000;
+	public final static int TAKE_LIMIT_TIME = 2000;
+	public final static int TAKE_LIMIT_DAY = 50000;
+	public final static int TRANSFERS_LIMIT_DAY = 50000;
+	public static final int ONE_TIME_LIMIT = 1;
+	public static final int ONE_DAY_LIMIT = 2;
+	public static final int LIMIT_OK = 0;
+	
 	private String cardNum;
 	private int cardId;
 
@@ -37,6 +46,7 @@ public class CardManager {
 	public static CardManager getInstance() {
 		if (dbManager == null) {
 			dbManager = new CardManager();
+			tradeManager = TradeManager.getInstance();
 			conn = DbFactory.getInstance().getConnection();
 		}
 		return dbManager;
@@ -44,10 +54,9 @@ public class CardManager {
 
 	/**
 	 * 返回用户持有卡的状态
-	 * 
-	 * @param cardNum
-	 *            卡号
-	 * @return 卡的状态 [状态优先 冻结状态>挂失状态]
+	 * @param cardNum 卡号
+	 * @return 卡的状态 {CARD_STATE_NORMAL,CARD_STATE_FROZEN,CARD_STATE_LOSS,CARD_STATE_CLOSED} <br/>
+	 * [状态优先 冻结状态>挂失状态]
 	 */
 	public String queryCardState(String cardNum) {
 		ResultSet rs = null;
@@ -108,13 +117,11 @@ public class CardManager {
 
 	/**
 	 * 对当前[CardID]指定的卡进行存款
-	 * 
 	 * @param money
 	 * @return
 	 */
 	public boolean saveCash(double money) {
 		double cash = dbManager.queryCash();
-		System.out.println("存款: 旧款:" + cash + " 新款:" + (cash + money));
 		cash += money;
 		String sql = "UPDATE " + TB_CARD + " SET cash= " + cash
 				+ " WHERE cardId = " + getCardId();
@@ -133,7 +140,6 @@ public class CardManager {
 
 	/**
 	 * 指定[OtherCardID]进行存款 [在转账中用到]
-	 * 
 	 * @param otherCardId
 	 * @param money
 	 * @return
@@ -155,10 +161,38 @@ public class CardManager {
 		}
 		return false;
 	}
-
+	/**
+	 * 验证存款额超过单次、单日上限
+	 * @param money
+	 * @return
+	 */
+	public int saveCashVerify(double money) {
+		if(money > SAVE_LIMIT_TIME){
+			return ONE_TIME_LIMIT;
+		}
+		if(SAVE_LIMIT_DAY < tradeManager.queryOnedayTradeCash(DateUtil.getDate(),TradeManager.TRADE_TYPE_SAVE)){
+			return ONE_DAY_LIMIT;
+		}
+		return LIMIT_OK;
+	}
+	public int takeCashVerify(double money) {
+		if(money > TAKE_LIMIT_TIME){
+			return ONE_TIME_LIMIT;
+		}
+		if(TAKE_LIMIT_DAY < tradeManager.queryOnedayTradeCash(DateUtil.getDate(),TradeManager.TRADE_TYPE_TAKE)){
+			return ONE_DAY_LIMIT;
+		}
+		return LIMIT_OK;
+	}
+	public int transCashVerify(double money) {
+		if(TRANSFERS_LIMIT_DAY < tradeManager.queryOnedayTradeCash(DateUtil.getDate(),TradeManager.TRADE_TYPE_TRANSFERS_OUT)){
+			return ONE_DAY_LIMIT;
+		}
+		return LIMIT_OK;
+	}
+	
 	/**
 	 * 对当前指定的[CradID]进行取款
-	 * 
 	 * @param money
 	 * @return
 	 */
@@ -185,7 +219,6 @@ public class CardManager {
 
 	/**
 	 * 查询当前[CardID]的与余额
-	 * 
 	 * @return
 	 */
 	public double queryCash() {
@@ -205,7 +238,6 @@ public class CardManager {
 
 	/**
 	 * 查询指定[CardID]的余额
-	 * 
 	 * @param specifyCardId
 	 * @return
 	 */
@@ -224,6 +256,11 @@ public class CardManager {
 		return NO_EXIT;
 	}
 
+	/**
+	 * 由卡号查cardId
+	 * @param cardNum
+	 * @return
+	 */
 	public int getCardIdByCardNum(String cardNum) {
 		String sql = "SELECT * FROM " + TB_CARD + " WHERE cardNum = " + cardNum;
 		try {
@@ -237,7 +274,11 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
-	
+	/**
+	 * 由cardId查持有人id [userId]
+	 * @param cardNum
+	 * @return
+	 */
 	public int getUserIdByCardId(int cardId) {
 		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardId = " + cardId;
 		try {
@@ -251,6 +292,11 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
+	/**
+	 * 由cardNum查持有人id [userId]
+	 * @param cardNum
+	 * @return
+	 */
 	public int getUserIdByCardNum(String cardNum) {
 		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardNum = " + cardNum;
 		try {
@@ -264,6 +310,12 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
+	/**
+	 * 转账，当前用户转给指定卡号指定金额
+	 * @param othersCardNum
+	 * @param money
+	 * @return
+	 */
 	public boolean transfersCash(String othersCardNum, double money) {
 		double cash = dbManager.queryCash();
 		if (Double.compare(cash, money) < 0 || othersCardNum == null
@@ -272,7 +324,6 @@ public class CardManager {
 		}
 		int othersCardId = getCardIdByCardNum(othersCardNum);
 		if (othersCardId == NO_EXIT) {
-			System.out.println("对方卡号不存在");
 			return false;
 		}
 		try {
@@ -295,7 +346,6 @@ public class CardManager {
 
 	/**
 	 * 依据用户id和密码创建新的卡号
-	 * 
 	 * @param userId
 	 * @param pwd
 	 */
@@ -320,7 +370,6 @@ public class CardManager {
 
 	/**
 	 * 注销卡号
-	 * 
 	 * @param cardId
 	 */
 	public void closeCard(String cardNum) {
@@ -336,7 +385,6 @@ public class CardManager {
 
 	/**
 	 * 冻结卡号
-	 * 
 	 * @param cardNum
 	 * @param flag
 	 */
@@ -353,7 +401,6 @@ public class CardManager {
 
 	/**
 	 * 挂失卡号
-	 * 
 	 * @param cardNum
 	 * @param flag
 	 */

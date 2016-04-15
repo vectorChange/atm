@@ -7,29 +7,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.mysql.jdbc.StringUtils;
-
-
 /**
  * 日期处理工具类
- * @author dylan_xu
- * @date Mar 11, 2012
- * @modified by
- * @modified date
- * @since JDK1.6
- * @see com.util.DateUtil
+ * @author xiaoguang
  */
-
 public class DateUtil {
-	// ~ Static fields/initializers
-	// =============================================
 
 	private static String defaultDatePattern = null;
 	private static String timePattern = "HH:mm";
 	private static Calendar cale = Calendar.getInstance();
 	public static final String TS_FORMAT = DateUtil.getDatePattern() + " HH:mm:ss.S";
 	/** 日期格式yyyy-MM字符串常量 */
-	private static final String MONTH_FORMAT = "yyyy-MM";
+//	private static final String MONTH_FORMAT = "yyyy-MM";
 	/** 日期格式yyyy-MM-dd字符串常量 */
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	/** 日期格式HH:mm:ss字符串常量 */
@@ -37,7 +26,7 @@ public class DateUtil {
 	/** 日期格式yyyy-MM-dd HH:mm:ss字符串常量 */
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	/** 某天开始时分秒字符串常量  00:00:00 */
-	private static final String DAY_BEGIN_STRING_HHMMSS = " 00:00:00";
+//	private static final String DAY_BEGIN_STRING_HHMMSS = " 00:00:00";
 	/**  某天结束时分秒字符串常量  23:59:59  */
 	public static final String DAY_END_STRING_HHMMSS = " 23:59:59";
 	private static SimpleDateFormat sdf_date_format = new SimpleDateFormat(DATE_FORMAT);

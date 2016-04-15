@@ -20,7 +20,7 @@ import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.dao.TradeManager;
 import com.we.util.IntegerLimitedKeyListener;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
@@ -67,7 +67,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));	
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 
@@ -164,6 +164,20 @@ public class CardTakeView extends JFrame implements ActionListener{
 				}
 				subNum = Integer.parseInt(tf_num.getText());
 			}
+			//上限验证
+			int verify = dbManager.takeCashVerify(subNum);
+			switch (verify) {
+			case CardManager.ONE_TIME_LIMIT:
+				JOptionPane.showMessageDialog(null, "超过单次取款上限 "+CardManager.TAKE_LIMIT_TIME, "取款异常", JOptionPane.INFORMATION_MESSAGE); 
+				return;
+			case CardManager.ONE_DAY_LIMIT:
+				JOptionPane.showMessageDialog(null,  "超过单日取款上限 "+CardManager.TAKE_LIMIT_DAY, "取款异常", JOptionPane.INFORMATION_MESSAGE); 
+				return;
+			case CardManager.LIMIT_OK:
+			default:
+				break;
+			}
+			
 			if(dbManager.takeCash(subNum)){
 				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TAKE, subNum, TradeManager.TARGET_NULL)){
 					new CardBusinessDone(getClass(), subNum).setVisible(true);

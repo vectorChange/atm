@@ -1,6 +1,5 @@
 package com.we.dao;
 
-import java.sql.Connection;
 
 /**
  * Card表和User表合并查询等 两表沟通渠道
