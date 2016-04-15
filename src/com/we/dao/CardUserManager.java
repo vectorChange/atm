@@ -32,4 +32,12 @@ public class CardUserManager {
 			return userManager.getUserNameByUserId(userId);
 		}
 	}
+	public String getUserNameByCardNum(String cardNum) {
+		int userId = cardManager.getUserIdByCardNum(cardNum);
+		if(userId == CardManager.NO_EXIT){
+			return CARDUSER_ERROR;
+		}else{
+			return userManager.getUserNameByUserId(userId);
+		}
+	}
 }

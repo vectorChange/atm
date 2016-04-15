@@ -50,7 +50,6 @@ public class CardManager {
 	 * @return 卡的状态 [状态优先 冻结状态>挂失状态]
 	 */
 	public String queryCardState(String cardNum) {
-		PreparedStatement preSt = null;
 		ResultSet rs = null;
 		String sql = "select * from " + TB_CARD + " where cardNum = " + cardNum;
 		try {
@@ -241,6 +240,19 @@ public class CardManager {
 	
 	public int getUserIdByCardId(int cardId) {
 		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardId = " + cardId;
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return rs.getInt("userId");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return NO_EXIT;
+	}
+	public int getUserIdByCardNum(String cardNum) {
+		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardNum = " + cardNum;
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);

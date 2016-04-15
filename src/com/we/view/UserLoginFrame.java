@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +22,7 @@ import com.we.dao.CardManager;
 import com.we.util.IntegerLimitedKeyListener;
 import com.we.util.MainImagePane;
 import com.we.util.MyButton;
+import com.we.util.TimerUtil;
 
 @SuppressWarnings("serial")
 public class UserLoginFrame extends JFrame {
@@ -30,7 +30,7 @@ public class UserLoginFrame extends JFrame {
 	protected static final int PASSWORD_LENGTH = 6;
 	private static final int FAIL_LOGIN_COUNT = 3;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField tf_acc;
 	private JPasswordField tf_pwd;
 	private int failLoginCnt;
 
@@ -71,16 +71,15 @@ public class UserLoginFrame extends JFrame {
 		lblNewLabel.setBounds(250, 146, 100, 20);
 		mainImagePane.add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(344, 139, 177, 30);
-		mainImagePane.add(textField);
-		textField.setColumns(10);
-		textField.setText("1001");
-		textField.setFont(new Font("宋体", Font.PLAIN,22));
+		tf_acc = new JTextField();
+		tf_acc.setBounds(344, 139, 177, 30);
+		mainImagePane.add(tf_acc);
+		tf_acc.setColumns(10);
+		tf_acc.setText("1001");
+		tf_acc.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_pwd = new JPasswordField();
 		tf_pwd.addKeyListener(new LoginPasswordKeyListener());
-		tf_pwd.setText("1");
 		tf_pwd.setBounds(344, 202, 177, 30);
 		mainImagePane.add(tf_pwd);
 		tf_pwd.setFont(new Font("宋体", Font.PLAIN,22));
@@ -112,19 +111,33 @@ public class UserLoginFrame extends JFrame {
 		lb_rest_time.setBounds(395, 10, 54, 40);
 		lb_rest_time.setFont(new Font("宋体", Font.PLAIN,22));
 		mainImagePane.add(lb_rest_time);
+		
+		JLabel lblNewLabel_2 = new JLabel("客服电话：95566");
+		lblNewLabel_2.setForeground(Color.GRAY);
+		lblNewLabel_2.setFont(new Font("宋体", Font.BOLD, 20));
+		lblNewLabel_2.setBounds(695, 11, 160, 40);
+		mainImagePane.add(lblNewLabel_2);
 		lb_rest_time.setVisible(false);
 		
+		//计时
+		TimerUtil.stopTimeCount();
+//		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
 		failLoginCnt = 0;
 		
 	}
 	
 	private void doLogin() {
+		String pwd = new String(tf_pwd.getPassword());
+		if(tf_acc.getText().equals("")|| pwd.equals("")){
+			JOptionPane.showMessageDialog(null, "卡号或密码为空", "登陆异常",JOptionPane.ERROR_MESSAGE); 
+			return;
+		}
 		CardManager cardManager = CardManager.getInstance();
-		String state = cardManager.queryCardState(textField.getText());
-		if(!state.equals(CardManager.CARD_STATE_NORMAL)){
+		String state = cardManager.queryCardState(tf_acc.getText());
+		if(!state.equals(CardManager.CARD_STATE_NORMAL)&&!state.equals(CardManager.CARD_STATE_FROZEN)){
 			JOptionPane.showMessageDialog(null, "该银行卡已"+state, "银行卡异常", JOptionPane.ERROR_MESSAGE); 
 		}else{
-			boolean loginRes = cardManager.queryLogin(textField.getText(),new String(tf_pwd.getPassword()));
+			boolean loginRes = cardManager.queryLogin(tf_acc.getText(),pwd);
 			if(loginRes){
 				new UserMain().setVisible(true);
 				dispose();
@@ -172,5 +185,4 @@ public class UserLoginFrame extends JFrame {
 			super.keyPressed(e);
 		}
 	}
-	
 }

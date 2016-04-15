@@ -41,12 +41,10 @@ public class CardDetailsView extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 
-	private CardManager cardManager = CardManager.getInstance();
 	private MyButton btn_back;
 	private MyButton btn_exit;
 	private JTable table;
 	private TradeManager tradeManager = TradeManager.getInstance();
-	private UserManager userManager = UserManager.getInstance();
 	private CardUserManager cardUserManager = CardUserManager.getInstance();
 	/**
 	 * Launch the application.

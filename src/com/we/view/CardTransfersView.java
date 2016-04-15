@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -19,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
+import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
 import com.we.util.FloatLimitedKeyListener;
 import com.we.util.MainImagePane;
@@ -35,10 +35,13 @@ public class CardTransfersView extends JFrame implements ActionListener {
 	private MyButton btn_sure;
 	private CardManager cardManager = CardManager.getInstance();
 	private TradeManager tradeManager = TradeManager.getInstance();
+	private CardUserManager cardUserManager = CardUserManager.getInstance();
 	private MyButton btn_clear;
 	private JTextField tf_num;
 	private JLabel lb_error;
 	private FloatLimitedKeyListener floatLimitedKeyListener;
+	private JLabel lb_name;
+	
 	
 	/**
 	 * Launch the application.
@@ -78,7 +81,6 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		
 		tf_cardNum = new JTextField();
 		tf_cardNum.setFont(new Font("宋体", Font.PLAIN,22));
-		tf_cardNum.setText("1002");
 		tf_cardNum.setBounds(400, 157, 144, 25);
 		mainImagePane.add(tf_cardNum);
 		tf_cardNum.setColumns(10);
@@ -87,10 +89,31 @@ public class CardTransfersView extends JFrame implements ActionListener {
 			public void focusGained(FocusEvent e) {
 				lb_error.setText("");
 				lb_error.setVisible(false);
+				lb_name.setText("");
+				lb_name.setVisible(false);
 				// 使错误信息消失
 			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(!tf_cardNum.getText().equals("")){
+					String targetUserName = cardUserManager.getUserNameByCardNum(tf_cardNum.getText());
+					if(CardUserManager.CARDUSER_ERROR != targetUserName){
+						StringBuilder sb = new StringBuilder(targetUserName);
+						switch (targetUserName.length()) {
+						case 4:
+							sb.replace(0, 2, "**");
+							break;
+						default:
+							sb.replace(0, 1, "*");
+							break;
+						}
+						lb_name.setText(sb.toString());
+						lb_name.setVisible(true);
+					}
+				}
+			}
 		});
-		JLabel lblNewLabel_1 = new JLabel("小心诈骗，客服电话66666");
+		JLabel lblNewLabel_1 = new JLabel("小心诈骗，客服电话95566");
 		lblNewLabel_1.setBounds(300, 306, 400, 73);
 		mainImagePane.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN,22));
@@ -113,7 +136,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		label.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_num = new JTextField();
-		tf_num.setText("1");
+		tf_num.setText("");
 		tf_num.setColumns(10);
 		tf_num.setBounds(400, 248, 144, 25);
 		tf_num.addKeyListener(floatLimitedKeyListener = new FloatLimitedKeyListener());
@@ -130,7 +153,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		
 		lb_error = new JLabel("错误提示");
 		lb_error.setForeground(Color.RED);
-		lb_error.setBounds(306, 401, 211, 127);
+		lb_error.setBounds(298, 389, 510, 62);
 		lb_error.setVisible(false);
 		lb_error.setFont(new Font("宋体", Font.PLAIN,22));
 		mainImagePane.add(lb_error);
@@ -144,6 +167,13 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		
 		TimerUtil.stopTimeCount();
 		TimerUtil.timeCount(lb_rest_time,this, UserMain.class);
+		
+		lb_name = new JLabel("对方名字显示");
+		lb_name.setForeground(Color.BLUE);
+		lb_name.setFont(new Font("宋体", Font.PLAIN, 22));
+		lb_name.setBounds(577, 150, 142, 40);
+		mainImagePane.add(lb_name);
+		lb_name.setVisible(false);
 	}
 	
 	@Override
@@ -153,41 +183,52 @@ public class CardTransfersView extends JFrame implements ActionListener {
 			new UserMain().setVisible(true);
 			dispose();
 		}else if(btn==btn_sure){
-			//卡号验证
-			String targetCardNum = tf_cardNum.getText();
-			if(targetCardNum.equals("")){
-				TextUtil.setErrorTxt(lb_error,"卡号必填");
-				return;
-			}
-			if(cardManager.getCardNum().equals(targetCardNum)){
-				TextUtil.setErrorTxt(lb_error,"不能给自己转账");
-				return;
-			}
-			
-			//金额验证
-			String verifyRes = TextUtil.verifyTransfersTextNum(tf_num.getText());
-			if(!verifyRes.equals(TextUtil.TEXT_OK)){
-				TextUtil.setErrorTxt(lb_error,verifyRes);
-				return;
-			}
-			double tradeCash = Double.parseDouble(tf_num.getText());
-			if(cardManager.transfersCash(targetCardNum,tradeCash)){
-				int targetCardId = cardManager.getCardIdByCardNum(targetCardNum);
-				if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, tradeCash, targetCardId)){
-//					System.out.println("插入转账记录成功");
-				}else{
-					JOptionPane.showMessageDialog(null, "转账成功，但添加交易记录失败", "转账异常", JOptionPane.WARNING_MESSAGE ); 
+			int confirm = JOptionPane.showConfirmDialog(null, "确定给 "+lb_name.getText()+" 转账 "+tf_num.getText() +" 元吗?", "转账确认", JOptionPane.YES_NO_OPTION); 
+	        if (confirm == JOptionPane.NO_OPTION) { 
+	        	return;
+	        }else{
+				//卡号验证
+				String targetCardNum = tf_cardNum.getText();
+				if(targetCardNum.equals("")){
+					TextUtil.setErrorTxt(lb_error,"卡号必填");
+					return;
 				}
-				new CardBusinessDone(getClass(), tradeCash).setVisible(true);
-			}else{
-				TextUtil.setErrorTxt(lb_error,"转账失败");
+				if(cardManager.getCardNum().equals(targetCardNum)){
+					TextUtil.setErrorTxt(lb_error,"不能给自己转账");
+					return;
+				}
+				String targetState = cardManager.queryCardState(targetCardNum);
+				if(targetState.equals(CardManager.CARD_STATE_LOSS)){	//挂失不能出入账
+					TextUtil.setErrorTxt(lb_error,"转账失败，对方银行卡暂不能接收转账");
+					return;
+				}
+				//金额验证
+				String verifyRes = TextUtil.verifyTransfersTextNum(tf_num.getText());
+				if(!verifyRes.equals(TextUtil.TEXT_OK) || Double.parseDouble(tf_num.getText()) == 0){
+					TextUtil.setErrorTxt(lb_error,verifyRes);
+					return;
+				}
+				double tradeCash = Double.parseDouble(tf_num.getText());
+				if(cardManager.transfersCash(targetCardNum,tradeCash)){
+					int targetCardId = cardManager.getCardIdByCardNum(targetCardNum);
+					if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, tradeCash, targetCardId)){
+					}else{
+						JOptionPane.showMessageDialog(null, "转账成功，但添加交易记录失败", "转账异常", JOptionPane.WARNING_MESSAGE ); 
+					}
+					new CardBusinessDone(getClass(), tradeCash).setVisible(true);
+				}else{
+					TextUtil.setErrorTxt(lb_error,"转账失败");
+				}
 			}
+	        
 		}else if(btn==btn_clear){
 			tf_cardNum.setText("");
 			tf_num.setText("");
 			tf_num.removeKeyListener(floatLimitedKeyListener);	//解除只能输入一次小数点，即使删除了内容再来的限制
 			floatLimitedKeyListener = new FloatLimitedKeyListener();
 			tf_num.addKeyListener(floatLimitedKeyListener);
+			lb_error.setText("");lb_error.setVisible(false);
+			lb_name.setText("");lb_name.setVisible(false);
 		}
 	}
 }

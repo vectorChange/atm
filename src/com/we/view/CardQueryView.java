@@ -32,7 +32,6 @@ public class CardQueryView extends JFrame  implements ActionListener{
 	private JLabel lb_cash;
 
 	private CardManager cardManager = CardManager.getInstance();;
-	private JLabel lb_preCash;
 	/**
 	 * Launch the application.
 	 */
@@ -53,7 +52,6 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		
 		double cash = cardManager.queryCash();
 		lb_cash.setText(cash+"");
-//		lb_preCash.setText(cash+"");
 	}
 
 	/**
@@ -102,41 +100,11 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		btn_history.addActionListener(this);
 		mainImagePane.add(btn_history);
 		
-//		JLabel label_1 = new JLabel("可用余额：");
-//		label_1.setForeground(Color.RED);
-//		label_1.setBounds(347, 175, 72, 15);
-//		contentPane.add(label_1);
-//		
-//		JLabel label_2 = new JLabel("可取现余额：");
-//		label_2.setForeground(Color.RED);
-//		label_2.setBounds(347, 216, 103, 15);
-//		contentPane.add(label_2);
-//		
-//		JLabel label_3 = new JLabel("最小还款额：");
-//		label_3.setForeground(Color.RED);
-//		label_3.setBounds(347, 257, 103, 15);
-//		contentPane.add(label_3);
-		
-//		JLabel label_4 = new JLabel("0");
-//		label_4.setBounds(456, 175, 84, 15);
-//		contentPane.add(label_4);
-//		
-//		JLabel label_5 = new JLabel("0");
-//		label_5.setBounds(456, 216, 84, 15);
-//		contentPane.add(label_5);
-//		
-//		JLabel label_6 = new JLabel("0.00");
-//		label_6.setBounds(453, 257, 54, 15);
-//		contentPane.add(label_6);
-
-//		JLabel label_7 = new JLabel("上期结欠金额：");
-//		label_7.setForeground(Color.RED);
-//		label_7.setBounds(347, 296, 103, 15);
-//		contentPane.add(label_7);
-//		lb_preCash = new JLabel("9,416.62");
-//		lb_preCash.setBounds(453, 296, 70, 15);
-//		contentPane.add(lb_preCash);
-		
+		//冻结的账号限制转出和取款
+		if( cardManager.queryCardState(cardManager.getCardNum()).equals(CardManager.CARD_STATE_FROZEN)){
+			btn_transfers.setEnabled(false);
+			btn_take.setEnabled(false);
+		}
 		
 		TimerUtil.stopTimeCount();
 		initData();
@@ -145,7 +113,6 @@ public class CardQueryView extends JFrame  implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		MyButton btn = (MyButton)e.getSource();
-		// TODO Auto-generated method stub
 		if(btn == btn_back){
 			new UserMain().setVisible(true);
 			dispose();

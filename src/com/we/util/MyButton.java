@@ -15,7 +15,6 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class MyButton extends JButton {
 	private MyButton myButton;
-	
 	public MyButton(String url){
 		ImageIcon icon = new ImageIcon(url);
 		super.setIcon(icon);

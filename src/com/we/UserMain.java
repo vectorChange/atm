@@ -5,11 +5,11 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.we.dao.CardManager;
 import com.we.util.MainImagePane;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
@@ -29,6 +29,8 @@ public class UserMain extends JFrame implements ActionListener{
 	private MyButton btn_transfers;
 	private MyButton btn_history;
 	private MyButton btn_exit;
+	private CardManager cardManager = CardManager.getInstance();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -84,6 +86,11 @@ public class UserMain extends JFrame implements ActionListener{
 		btn_exit.addActionListener(this);
 		mainImagePane.add(btn_exit);
 		
+		//冻结的账号限制转出和取款
+		if( cardManager.queryCardState(cardManager.getCardNum()).equals(CardManager.CARD_STATE_FROZEN)){
+			btn_transfers.setEnabled(false);
+			btn_take.setEnabled(false);
+		}
 		TimerUtil.stopTimeCount();
 	}
 
