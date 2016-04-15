@@ -304,7 +304,7 @@ public class CardManager {
 	 * @param cardId
 	 */
 	public void closeCard(String cardNum) {
-		String sql = "UPDATE " + TB_CARD + " SET closed = 1 WHERE cardId = '"
+		String sql = "UPDATE " + TB_CARD + " SET closed = 1 WHERE cardNum = '"
 				+ cardNum + "'";
 		try {
 			Statement st = conn.createStatement();

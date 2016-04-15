@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.we.bean.TradeInfo;
 import com.we.util.DateUtil;
@@ -87,15 +85,10 @@ public class TradeManager {
 		return null;
 	}
 	
-	/**
-	 * 查询指定卡号的指定日期段内的所有交易记录
-	 * @param beforeThisDate  date < beforeThisDate
-	 * @param afterThisDate date >= afterThisDate
-	 * @return
-	 */
-	public ArrayList<TradeInfo> queryRecentTradeInfos(String beforeThisDate,String afterThisDate) {
+	
+	public ArrayList<TradeInfo> queryRecentTradeInfos(String beforeThisDate,String afterThisDate, int cardId) {
 		ArrayList<TradeInfo>list = new ArrayList<TradeInfo>();
-		String sql = "SELECT * FROM "+TB_TRADE + " WHERE cardId = "+getCardId()
+		String sql = "SELECT * FROM "+TB_TRADE + " WHERE cardId = "+ cardId
 				+ " and tradeDate between '"+ afterThisDate +"' and '"+beforeThisDate+"'";
 		try {
 			Statement st = conn.createStatement();
@@ -117,6 +110,17 @@ public class TradeManager {
 		return null;
 	}
 
+	/**
+	 * /**
+	 * 查询指定卡号的指定日期段内的所有交易记录
+	 * @param beforeThisDate  date < beforeThisDate
+	 * @param afterThisDate date >= afterThisDate
+	 * @return
+	 */
+	public ArrayList<TradeInfo> queryRecentTradeInfos(String beforeThisDate,String afterThisDate) {
+		return queryRecentTradeInfos(beforeThisDate, afterThisDate, getCardId());
+	}
+	
 	public int getCardId() {
 		return cardId;
 	}

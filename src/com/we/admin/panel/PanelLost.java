@@ -1,11 +1,15 @@
 package com.we.admin.panel;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+
+import com.we.dao.CardManager;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -15,6 +19,7 @@ public class PanelLost extends JPanel{
 	private JTextField tf_acc;
 	JRadioButton rb_lost;
 	JRadioButton rb_unlost;
+	private CardManager cardManager = CardManager.getInstance();
 	private final ButtonGroup btn_group = new ButtonGroup();
 	public PanelLost() {
 		setLayout(null);
@@ -46,13 +51,19 @@ public class PanelLost extends JPanel{
 		btn_con.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int flag = rb_lost.isSelected() ? 1 : 0;
-				
+				cardManager.lostCard(tf_acc.getText(), flag);
+				JOptionPane.showMessageDialog(PanelLost.this, "操作成功");
 			}
 		});
 		btn_con.setBounds(159, 239, 93, 23);
 		add(btn_con);
 		
 		JButton btn_reset = new JButton("重置");
+		btn_reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tf_acc.setText("");
+			}
+		});
 		btn_reset.setBounds(313, 239, 93, 23);
 		add(btn_reset);
 	}

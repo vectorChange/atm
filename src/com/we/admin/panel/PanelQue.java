@@ -6,6 +6,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class PanelQue extends JPanel {
@@ -19,20 +21,26 @@ public class PanelQue extends JPanel {
 		setLayout(null);
 
 		JLabel lb_id = new JLabel("身份证号：");
-		lb_id.setBounds(10, 14, 82, 15);
+		lb_id.setBounds(10, 20, 82, 15);
 		add(lb_id);
 
 		tf_id = new JTextField();
-		tf_id.setBounds(75, 11, 180, 21);
+		tf_id.setBounds(75, 16, 180, 23);
 		add(tf_id);
 		tf_id.setColumns(10);
 
 		JButton btn_query = new JButton("查询");
-		btn_query.setBounds(466, 10, 93, 23);
+		btn_query.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO 查询用户信息，并且返回用户持有的卡号的现状
+				
+			}
+		});
+		btn_query.setBounds(467, 16, 93, 23);
 		add(btn_query);
 
 		JScrollPane scroll_panel = new JScrollPane();
-		scroll_panel.setBounds(10, 51, 549, 305);
+		scroll_panel.setBounds(10, 50, 550, 280);
 		add(scroll_panel);
 
 		table = new JTable();
