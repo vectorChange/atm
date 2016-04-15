@@ -10,7 +10,6 @@ import javax.swing.text.AbstractDocument.Content;
 public class FloatLimitedKeyListener  extends KeyAdapter  {
 	private String canKey = "0123456789.";
 	private String text = "";
-	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char key = e.getKeyChar();

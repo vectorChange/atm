@@ -17,19 +17,17 @@ public class CardManager {
 	public final static String CARD_STATE_FROZEN = "冻结";
 	public final static String CARD_STATE_LOSS = "挂失";
 	public final static String CARD_STATE_CLOSED = "注销";
-	// private final static String TB_TRADE= "tradeinfo";
-	// private final static String TB_USER= "UserInfo";
-	private final static int NO_EXIT = -1;
+	public final static int CARD_FLAG_FROZEN = 1;
+	public final static int CARD_FLAG_UNFROZEN = 0;
+	public final static int NO_EXIT = -1;
 
 	private String cardNum;
-	private String cardPwd;
 	private int cardId;
 
 	// 测试用
 	private void testing() {
 		setCardId(1);
 		setCardNum("1001");
-		cardPwd = "1";
 	}
 
 	private CardManager() {
@@ -52,7 +50,6 @@ public class CardManager {
 	 * @return 卡的状态 [状态优先 冻结状态>挂失状态]
 	 */
 	public String queryCardState(String cardNum) {
-		PreparedStatement preSt = null;
 		ResultSet rs = null;
 		String sql = "select * from " + TB_CARD + " where cardNum = " + cardNum;
 		try {
@@ -75,7 +72,6 @@ public class CardManager {
 
 	/**
 	 * 查询是否登陆成功
-	 * 
 	 * @param cardNum
 	 * @param password
 	 * @return
@@ -93,8 +89,6 @@ public class CardManager {
 			if (rs.next()) {
 				setCardId(rs.getInt("cardId"));
 				setCardNum(rs.getString("cardNum"));
-				cardPwd = rs.getString("password");
-				// System.out.println("登陆成功");
 				return true;
 			} else {
 				return false;
@@ -243,7 +237,33 @@ public class CardManager {
 		}
 		return NO_EXIT;
 	}
-
+	
+	public int getUserIdByCardId(int cardId) {
+		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardId = " + cardId;
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return rs.getInt("userId");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return NO_EXIT;
+	}
+	public int getUserIdByCardNum(String cardNum) {
+		String sql = "SELECT userId FROM " + TB_CARD + " WHERE cardNum = " + cardNum;
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				return rs.getInt("userId");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return NO_EXIT;
+	}
 	public boolean transfersCash(String othersCardNum, double money) {
 		double cash = dbManager.queryCash();
 		if (Double.compare(cash, money) < 0 || othersCardNum == null

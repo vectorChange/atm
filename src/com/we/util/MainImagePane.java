@@ -14,7 +14,7 @@ public class MainImagePane extends JPanel {
 
 	public MainImagePane() {
 		try {
-			image = ImageIO.read(new File("res\\main_bg.jpg"));
+			image = ImageIO.read(new File("res\\bg.png"));
 			this.setOpaque(false);
 		} catch (IOException ex) {
 			ex.printStackTrace();

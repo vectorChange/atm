@@ -1,24 +1,37 @@
 package com.we.view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import com.we.UserMain;
 import com.we.bean.TradeInfo;
 import com.we.dao.CardManager;
+import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
 import com.we.dao.UserManager;
 import com.we.util.DateUtil;
+import com.we.util.MainImagePane;
+import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 
 @SuppressWarnings("serial")
@@ -28,13 +41,11 @@ public class CardDetailsView extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 
-	CardManager cardManager = CardManager.getInstance();
-	private JButton btn_back;
-	private JButton btn_exit;
+	private MyButton btn_back;
+	private MyButton btn_exit;
 	private JTable table;
-	TradeManager tradeManager = TradeManager.getInstance();
-	UserManager userManager = UserManager.getInstance();
-
+	private TradeManager tradeManager = TradeManager.getInstance();
+	private CardUserManager cardUserManager = CardUserManager.getInstance();
 	/**
 	 * Launch the application.
 	 */
@@ -43,6 +54,15 @@ public class CardDetailsView extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					CardDetailsView frame = new CardDetailsView();
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CardDetailsView frame = new CardDetailsView();
+					UIManager.setLookAndFeel(new NimbusLookAndFeel());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,27 +75,29 @@ public class CardDetailsView extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public CardDetailsView() {
+		super("交易记录明细");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		MainImagePane mainImagePane = new MainImagePane();
+		contentPane.add(mainImagePane);
+		mainImagePane.setLayout(null);
 
-		btn_exit = new JButton("退出");
-		btn_exit.setBounds(29, 468, 93, 23);
-		contentPane.add(btn_exit);
+		btn_exit = new MyButton("res\\btn_exit.png", 10, 400);
 		btn_exit.addActionListener(this);
+		mainImagePane.add(btn_exit);
 
-		btn_back = new JButton("回主菜单");
-		btn_back.setBounds(767, 468, 93, 23);
-		contentPane.add(btn_back);
+		btn_back = new MyButton("res\\btn_back.png", 720, 400);
 		btn_back.addActionListener(this);
+		mainImagePane.add(btn_back);
 
 		JLabel label = new JLabel("近三个月交易明细");
-		label.setBounds(383, 77, 121, 23);
-		contentPane.add(label);
-
+		label.setBounds(350, 34, 200, 23);
+		mainImagePane.add(label);
+		label.setFont(new Font("宋体", Font.PLAIN, 22));
 		String threeMonthBefore = DateUtil.addDay(DateUtil.getDate(),
 				HISTORY_DAY_LIMIT);
 		ArrayList<TradeInfo> dataList = tradeManager.queryRecentTradeInfos(
@@ -89,23 +111,50 @@ public class CardDetailsView extends JFrame implements ActionListener {
 			rowData[i][3] = dataList.get(i).getTradeMoney() + " CNY";
 			int targetId = dataList.get(i).getTarget();
 			if (targetId != TradeManager.TARGET_NULL) {
-				rowData[i][4] = userManager.getUserNameByCardId(targetId);
+				String targetUserName = cardUserManager.getUserNameByCardId(targetId);
+				if(CardUserManager.CARDUSER_ERROR != targetUserName){
+					rowData[i][4] = targetUserName;
+				}
 			}
 		}
 		JScrollPane scroll = new JScrollPane();
-		scroll.setLocation(143, 125);
-		scroll.setSize(578, 366);
-		table = new JTable(rowData, columnNames);
+		scroll.setLocation(158, 83);
+		scroll.setSize(560, 300);
+		table = new JTable(rowData, columnNames) {
+			public Component prepareRenderer(TableCellRenderer renderer,
+					int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (c instanceof JComponent) {
+					((JComponent) c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		table.setFont(new Font("宋体", Font.PLAIN, 12));
+		// 设置显示范围
+		Dimension viewSize = new Dimension();
+		viewSize.width = table.getColumnModel().getTotalColumnWidth();
+		;
+		viewSize.height = 10 * table.getRowHeight();
+		table.setPreferredScrollableViewportSize(viewSize);
+		table.setIntercellSpacing(new Dimension(0, 0));
+		JTableHeader header = table.getTableHeader();
+		header.setPreferredSize(new Dimension(30, 26));
+		header.setOpaque(false);
+		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
+		render.setOpaque(false); // 将渲染器设置为透明
+		table.setDefaultRenderer(Object.class, render);
+
+		table.setOpaque(false);
+		scroll.getViewport().setOpaque(false);
+		scroll.setOpaque(false);
+		scroll.getViewport().setOpaque(false);
 		scroll.setViewportView(table);
-		contentPane.add(scroll);
-		table.setBounds(168, 161, 372, 1600);
+		mainImagePane.add(scroll);
+		table.setBounds(168, 161, 155, 1000);
+		table.getTableHeader().setOpaque(false);
 
-		// dataList.
 		TimerUtil.stopTimeCount();
-	}
-
-	private String getShowTarget(int targetId) {
-		return "用户" + targetId;
 	}
 
 	public static String getShowType(int tradeType) {
@@ -124,7 +173,7 @@ public class CardDetailsView extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton btn = (JButton) e.getSource();
+		MyButton btn = (MyButton) e.getSource();
 		if (btn == btn_exit) {
 			System.exit(0);
 		} else if (btn == btn_back) {

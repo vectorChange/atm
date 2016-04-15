@@ -1,19 +1,17 @@
 package com.we;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.we.util.DateUtil;
+import com.we.dao.CardManager;
 import com.we.util.MainImagePane;
-import com.we.util.TextUtil;
+import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 import com.we.view.CardDetailsView;
 import com.we.view.CardQueryView;
@@ -25,13 +23,14 @@ public class UserMain extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = -87501980138210364L;
 	private JPanel contentPane;
-	private JButton btn_query;
-	private JButton btn_save;
-	private JButton btn_take;
-	private JButton btn_transfers;
-	private JButton btn_history;
-	private JButton btn_exit;
-
+	private MyButton btn_query;
+	private MyButton btn_save;
+	private MyButton btn_take;
+	private MyButton btn_transfers;
+	private MyButton btn_history;
+	private MyButton btn_exit;
+	private CardManager cardManager = CardManager.getInstance();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -52,6 +51,7 @@ public class UserMain extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public UserMain() {
+		super("主界面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(250, 80, 900, 600);
 		contentPane = new JPanel();
@@ -62,41 +62,41 @@ public class UserMain extends JFrame implements ActionListener{
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		
-		btn_query = new JButton("查询余额");
-		btn_query.setBounds(10, 121, 93, 23);
-		mainImagePane.add(btn_query);
+		btn_query = new MyButton("res\\btn_query_rest.png",10, 100);
 		btn_query.addActionListener(this);
+		mainImagePane.add(btn_query);
 		
-		btn_save = new JButton("存款");
-		btn_save.setBounds(749, 230, 93, 23);
-		mainImagePane.add(btn_save);
+		btn_save = new MyButton("res\\btn_save.png",720,250);
 		btn_save.addActionListener(this);
+		mainImagePane.add(btn_save);
 		
-		btn_take = new JButton("取款");
-		btn_take.setBounds(749, 121, 93, 23);
-		mainImagePane.add(btn_take);
+		btn_take = new MyButton("res\\btn_take.png",720,100);
 		btn_take.addActionListener(this);
+		mainImagePane.add(btn_take);
 		
-		btn_transfers = new JButton("转账");
-		btn_transfers.setBounds(749, 345, 93, 23);
+		btn_transfers = new MyButton("res\\btn_transfers.png",720,400);
 		btn_transfers.addActionListener(this);
 		mainImagePane.add(btn_transfers);
 		
-		btn_history = new JButton("记录查询");
-		btn_history.setBounds(10, 230, 93, 23);
-		mainImagePane.add(btn_history);
+		btn_history = new MyButton("res\\btn_history.png",10,250);
 		btn_history.addActionListener(this);
-
-		btn_exit = new JButton("退出");
+		mainImagePane.add(btn_history);
+		
+		btn_exit = new MyButton("res\\btn_exit.png",10,400);
 		btn_exit.addActionListener(this);
-		btn_exit.setBounds(10, 345, 93, 23);
 		mainImagePane.add(btn_exit);
+		
+		//冻结的账号限制转出和取款
+		if( cardManager.queryCardState(cardManager.getCardNum()).equals(CardManager.CARD_STATE_FROZEN)){
+			btn_transfers.setEnabled(false);
+			btn_take.setEnabled(false);
+		}
 		TimerUtil.stopTimeCount();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton btn = (JButton)e.getSource();
+		MyButton btn = (MyButton)e.getSource();
 		if( btn == btn_query){
 			new CardQueryView().setVisible(true);
 			dispose();
@@ -106,7 +106,6 @@ public class UserMain extends JFrame implements ActionListener{
 		}else if(btn == btn_take){
 			new CardTakeView().setVisible(true);
 			dispose();
-			
 		}else if(btn == btn_transfers){
 			new CardTransfersView().setVisible(true);;
 			dispose();
