@@ -16,7 +16,7 @@ public class AdminManager {
 	private String adminId;
 	private String adminName;
 	private String adminPwd;
-	private String adminType;
+	private int adminType;
 
 	private AdminManager() {
 	}
@@ -49,7 +49,7 @@ public class AdminManager {
 				adminId = rs.getString("adminId");
 				adminName = rs.getString("adminName");
 				adminPwd = rs.getString("password");
-				adminType = rs.getString("adminType");
+				adminType = rs.getInt("adminType");
 				return true;
 			} else {
 				return false;
@@ -83,19 +83,10 @@ public class AdminManager {
 		}
 		return false;
 	}
-
-	// public int queryCash() {
-	// String sql = "SELECT * FROM "+TB_CARD + " WHERE cardID = "+curCardId;
-	// try {
-	// Statement st = conn.createStatement();
-	// ResultSet rs = st.executeQuery(sql);
-	// while (rs.next()) {
-	// return rs.getInt("cash");
-	// }
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	// return -1;
-	// }
+	
+	public int getAdminType() {
+		return this.adminType;
+	}
+	
 	
 }

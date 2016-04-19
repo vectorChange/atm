@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
 
 public class UserManager {
 	private static Connection conn = null;
@@ -77,25 +78,49 @@ public class UserManager {
 	 * @param idCard
 	 * @param phone
 	 */
-	public void createUser(String Name, String idCard, String phone) {
-		StringBuilder sb = new StringBuilder();
-		String token = ", ";
-		String quote = "\'";
-		sb.append("INSERT INTO " + TB_USER + " ( userName, personID ");
-		if (phone != null) {
-			sb.append(token + " phone");
-		}
-		sb.append(")  values ( ");
-		sb.append(quote + Name + quote + token + quote + idCard + quote);
-		if (phone != null) {
-			sb.append(token + quote + phone + quote);
-		}
-		sb.append(" )");
-		String sql = sb.toString();
+	public void createUser(String Name, String idCard, String phone,
+			String sex, String address) {
+		String sql = " INSERT INTO "
+				+ " userinfo (userName, personID, phone, sex, address) "
+				+ " VALUES( '" + Name + "', '" + idCard + "', '" + phone
+				+ "', '" + sex + "', '" + address + "')";
 		try {
 			Statement st = conn.createStatement();
 			st.execute(sql);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String getUserInfo(String personId) {
+		StringBuilder sb = new StringBuilder();
+		String sql = "select * from userinfo where personId = '" + personId
+				+ "'";
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			rs.next();
+			sb.append("用户姓名：" + rs.getString("userName") + "\n");
+			sb.append("用户性别：" + rs.getString("sex") + "\n");
+			sb.append("绑定手机：" + rs.getString("phone") + "\n");
+			sb.append("用户地址：" + rs.getString("address") + "\n");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+
+	public void updateUserInfoByPersonId(String personId, String name,
+			String phone, String sex, String address) {
+		String sql = "UPDATE userinfo SET userName = '" + name + "'"
+				+ " , phone = '" + phone + "'" + " , sex = '" + sex + "'"
+				+ " , address = '" + address + "' WHERE personID = '"
+				+ personId + "'";
+		try {
+			Statement statement = conn.createStatement();
+			statement.execute(sql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

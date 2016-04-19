@@ -63,7 +63,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 		contentPane.add(btn_manager);
 		btn_manager.addActionListener(this);
 		btn_normal.addActionListener(this);
-
 	}
 
 	@Override

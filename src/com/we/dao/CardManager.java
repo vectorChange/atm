@@ -1,7 +1,6 @@
 package com.we.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -299,23 +298,20 @@ public class CardManager {
 	 * @param userId
 	 * @param pwd
 	 */
-	public String newCardForUser(int userId, String pwd) {
-		CardNumManager cardNumManager = CardNumManager.getInstance();
+	public void newCardForUser(int userId, String pwd, String cardNum) {
+		
 		String openDate = DateUtil.getDateTime();
-		String cardNum = String
-				.valueOf(Integer.valueOf(cardNumManager.getNum()) + 1);
+		
 		String sql = "INSERT INTO " + TB_CARD
 				+ " (userId, password, openDate, cardNum) " + " VALUES ("
-				+ userId + ", " + pwd + ", \'" + openDate + "\', \'" + cardNum
-				+ "\');";
+				+ userId + ", " + pwd + ", '" + openDate + "', '" + cardNum
+				+ "');";
 		try {
 			Statement st = conn.createStatement();
 			st.execute(sql);
-			cardNumManager.setNum(cardNum);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return cardNum;
 	}
 
 	/**
