@@ -24,7 +24,11 @@ public class CardNumManager {
 		return dbManager;
 	}
 
-	public String getNum() {
+	/**
+	 * 获取下一个卡号
+	 * @return
+	 */
+	public String getNextNum() {
 		String retVal = null;
 		String sql = "SELECT * FROM " + TABLE_NAME ;
 		try {
@@ -35,9 +39,13 @@ public class CardNumManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return retVal;
+		return String.valueOf(Integer.valueOf(retVal) + 1);
 	}
 
+	/**
+	 * 更新数据库中的表maxNum
+	 * @param num
+	 */
 	public void setNum(String num) {
 		String sql = "UPDATE " + TABLE_NAME + " SET maxNum = \'" + num + "\'";
 		try {

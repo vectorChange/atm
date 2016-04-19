@@ -24,6 +24,8 @@ import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class CardSaveView extends JFrame implements ActionListener{
 
@@ -97,6 +99,7 @@ public class CardSaveView extends JFrame implements ActionListener{
 		mainImagePane.add(btn_sure);
 		
 		tf_num = new JTextField();
+		tf_num.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tf_num.addKeyListener(new IntegerLimitedKeyListener());
 		tf_num.setBounds(350, 120, 120, 25);
 		mainImagePane.add(tf_num);

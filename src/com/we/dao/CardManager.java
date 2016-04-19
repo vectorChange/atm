@@ -349,23 +349,20 @@ public class CardManager {
 	 * @param userId
 	 * @param pwd
 	 */
-	public String newCardForUser(int userId, String pwd) {
-		CardNumManager cardNumManager = CardNumManager.getInstance();
+	public void newCardForUser(int userId, String pwd, String cardNum) {
+		
 		String openDate = DateUtil.getDateTime();
-		String cardNum = String
-				.valueOf(Integer.valueOf(cardNumManager.getNum()) + 1);
+		
 		String sql = "INSERT INTO " + TB_CARD
 				+ " (userId, password, openDate, cardNum) " + " VALUES ("
-				+ userId + ", " + pwd + ", \'" + openDate + "\', \'" + cardNum
-				+ "\');";
+				+ userId + ", " + pwd + ", '" + openDate + "', '" + cardNum
+				+ "');";
 		try {
 			Statement st = conn.createStatement();
 			st.execute(sql);
-			cardNumManager.setNum(cardNum);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return cardNum;
 	}
 
 	/**
@@ -373,7 +370,7 @@ public class CardManager {
 	 * @param cardId
 	 */
 	public void closeCard(String cardNum) {
-		String sql = "UPDATE " + TB_CARD + " SET closed = 1 WHERE cardId = '"
+		String sql = "UPDATE " + TB_CARD + " SET closed = 1 WHERE cardNum = '"
 				+ cardNum + "'";
 		try {
 			Statement st = conn.createStatement();

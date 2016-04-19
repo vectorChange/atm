@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,10 +25,12 @@ import javax.swing.table.TableCellRenderer;
 
 import com.we.UserMain;
 import com.we.bean.TradeInfo;
+import com.we.dao.CardManager;
 import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
+import com.we.dao.UserManager;
 import com.we.util.DateUtil;
-import com.we.util.BackgroundPane;
+import com.we.util.MainImagePane;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 
@@ -38,12 +41,21 @@ public class CardDetailsView extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 
+<<<<<<< HEAD
+	CardManager cardManager = CardManager.getInstance();
+	private JButton btn_back;
+	private JButton btn_exit;
+	private JTable table;
+	TradeManager tradeManager = TradeManager.getInstance();
+	UserManager userManager = UserManager.getInstance();
+
+=======
 	private MyButton btn_back;
 	private MyButton btn_exit;
 	private JTable table;
 	private TradeManager tradeManager = TradeManager.getInstance();
 	private CardUserManager cardUserManager = CardUserManager.getInstance();
-
+>>>>>>> 4b83163c1f5238d1e1fb00dbf5d1ab4c2b96aa8e
 	/**
 	 * Launch the application.
 	 */
@@ -72,12 +84,24 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		BackgroundPane mainImagePane = new BackgroundPane();
+		MainImagePane mainImagePane = new MainImagePane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 
 		btn_exit = new MyButton("res\\btn_exit.png", 10, 400);
 		btn_exit.addActionListener(this);
+<<<<<<< HEAD
+
+		btn_back = new JButton("回主菜单");
+		btn_back.setBounds(767, 468, 93, 23);
+		contentPane.add(btn_back);
+		btn_back.addActionListener(this);
+
+		JLabel label = new JLabel("近三个月交易明细");
+		label.setBounds(383, 77, 121, 23);
+		contentPane.add(label);
+
+=======
 		mainImagePane.add(btn_exit);
 
 		btn_back = new MyButton("res\\btn_back.png", 720, 400);
@@ -88,11 +112,16 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		label.setBounds(350, 34, 200, 23);
 		mainImagePane.add(label);
 		label.setFont(new Font("宋体", Font.PLAIN, 22));
+>>>>>>> 4b83163c1f5238d1e1fb00dbf5d1ab4c2b96aa8e
 		String threeMonthBefore = DateUtil.addDay(DateUtil.getDate(),
 				HISTORY_DAY_LIMIT);
 		ArrayList<TradeInfo> dataList = tradeManager.queryRecentTradeInfos(
 				DateUtil.addDay(DateUtil.getDate(), 1), threeMonthBefore);
+<<<<<<< HEAD
 		String rowData[][] = new String[dataList.size()][5];
+=======
+		String rowData[][] = new String[100][5];
+>>>>>>> 4b83163c1f5238d1e1fb00dbf5d1ab4c2b96aa8e
 		Object columnNames[] = { "序号", "交易时间", "交易类型", "交易金额", "转账对象" };
 		for (int i = 0; i < dataList.size(); i++) {
 			rowData[i][0] = String.valueOf(i + 1);
@@ -101,6 +130,25 @@ public class CardDetailsView extends JFrame implements ActionListener {
 			rowData[i][3] = dataList.get(i).getTradeMoney() + " CNY";
 			int targetId = dataList.get(i).getTarget();
 			if (targetId != TradeManager.TARGET_NULL) {
+<<<<<<< HEAD
+				rowData[i][4] = userManager.getUserNameByCardId(targetId);
+			}
+		}
+		JScrollPane scroll = new JScrollPane();
+		scroll.setLocation(143, 125);
+		scroll.setSize(578, 366);
+		table = new JTable(rowData, columnNames);
+		scroll.setViewportView(table);
+		contentPane.add(scroll);
+		table.setBounds(168, 161, 372, 1600);
+
+		// dataList.
+		TimerUtil.stopTimeCount();
+	}
+
+	private String getShowTarget(int targetId) {
+		return "用户" + targetId;
+=======
 				String targetUserName = cardUserManager.getUserNameByCardId(targetId);
 				if(CardUserManager.CARDUSER_ERROR != targetUserName){
 					rowData[i][4] = targetUserName;
@@ -119,9 +167,6 @@ public class CardDetailsView extends JFrame implements ActionListener {
 				}
 				return c;
 			}
-			public boolean isCellEditable(int row, int column) {	//禁用编辑
-			     return false;
-			 }
 		};
 		table.setFont(new Font("宋体", Font.PLAIN, 12));
 		// 设置显示范围
@@ -148,6 +193,7 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		table.getTableHeader().setOpaque(false);
 
 		TimerUtil.stopTimeCount();
+>>>>>>> 4b83163c1f5238d1e1fb00dbf5d1ab4c2b96aa8e
 	}
 
 	public static String getShowType(int tradeType) {
@@ -166,7 +212,11 @@ public class CardDetailsView extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
+		JButton btn = (JButton) e.getSource();
+=======
 		MyButton btn = (MyButton) e.getSource();
+>>>>>>> 4b83163c1f5238d1e1fb00dbf5d1ab4c2b96aa8e
 		if (btn == btn_exit) {
 			System.exit(0);
 		} else if (btn == btn_back) {

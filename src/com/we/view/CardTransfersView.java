@@ -25,6 +25,10 @@ import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class CardTransfersView extends JFrame implements ActionListener {
 
@@ -80,6 +84,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_cardNum = new JTextField();
+		tf_cardNum.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tf_cardNum.setFont(new Font("宋体", Font.PLAIN,22));
 		tf_cardNum.setBounds(400, 157, 144, 25);
 		mainImagePane.add(tf_cardNum);
@@ -136,6 +141,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		label.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_num = new JTextField();
+		tf_num.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tf_num.setText("");
 		tf_num.setColumns(10);
 		tf_num.setBounds(400, 248, 144, 25);

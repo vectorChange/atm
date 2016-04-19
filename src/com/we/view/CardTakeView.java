@@ -24,6 +24,8 @@ import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class CardTakeView extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -8589646050175082423L;
@@ -106,6 +108,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 		label_1.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_num = new JTextField();
+		tf_num.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tf_num.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -116,7 +119,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 		});
 		tf_num.addKeyListener(new IntegerLimitedKeyListener());
 		tf_num.setColumns(10);
-		tf_num.setBounds(350, 120, 93, 22);
+		tf_num.setBounds(350, 120, 121, 22);
 		tf_num.setFont(new Font("宋体", Font.PLAIN,22));
 		mainImagePane.add(tf_num);
 		

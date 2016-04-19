@@ -72,12 +72,14 @@ public class UserLoginFrame extends JFrame {
 		mainImagePane.add(lblNewLabel);
 		
 		tf_acc = new JTextField();
+		tf_acc.setBorder(null);
 		tf_acc.setBounds(344, 139, 177, 30);
 		mainImagePane.add(tf_acc);
 		tf_acc.setColumns(10);
 		tf_acc.setFont(new Font("宋体", Font.PLAIN,22));
 		
 		tf_pwd = new JPasswordField();
+		tf_pwd.setBorder(null);
 		tf_pwd.addKeyListener(new LoginPasswordKeyListener());
 		tf_pwd.setBounds(344, 202, 177, 30);
 		mainImagePane.add(tf_pwd);
