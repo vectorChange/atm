@@ -123,7 +123,7 @@ public class CardTakeView extends JFrame implements ActionListener{
 		lb_error = new JLabel("错误提示");
 		lb_error.setForeground(Color.RED);
 		lb_error.setBackground(Color.RED);
-		lb_error.setBounds(350, 295, 252, 56);
+		lb_error.setBounds(310, 295, 252, 56);
 		lb_error.setFont(new Font("宋体", Font.PLAIN,22));
 		lb_error.setVisible(false);
 		mainImagePane.add(lb_error);

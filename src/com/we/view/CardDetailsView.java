@@ -118,6 +118,9 @@ public class CardDetailsView extends JFrame implements ActionListener {
 				}
 				return c;
 			}
+			public boolean isCellEditable(int row, int column) {	//禁用编辑
+			     return false;
+			 }
 		};
 		table.setFont(new Font("宋体", Font.PLAIN, 12));
 		// 设置显示范围
