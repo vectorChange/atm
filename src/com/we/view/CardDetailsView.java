@@ -27,7 +27,7 @@ import com.we.bean.TradeInfo;
 import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
 import com.we.util.DateUtil;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 
@@ -72,7 +72,7 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 

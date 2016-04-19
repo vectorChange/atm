@@ -9,10 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainImagePane extends JPanel {
+@SuppressWarnings("serial")
+public class BackgroundPane extends JPanel {
 	private Image image;
 
-	public MainImagePane() {
+	public BackgroundPane() {
 		try {
 			image = ImageIO.read(new File("res\\bg.png"));
 			this.setOpaque(false);
@@ -20,7 +21,16 @@ public class MainImagePane extends JPanel {
 			ex.printStackTrace();
 		}
 	}
-
+	
+	public BackgroundPane(String path) {
+		try {
+			image = ImageIO.read(new File(path));
+			this.setOpaque(false);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -29,7 +39,7 @@ public class MainImagePane extends JPanel {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new MainImagePane());
+		frame.getContentPane().add(new BackgroundPane());
 		frame.setSize(800, 600);
 		frame.setVisible(true);
 	}

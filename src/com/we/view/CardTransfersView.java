@@ -21,7 +21,7 @@ import com.we.dao.CardManager;
 import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
 import com.we.util.FloatLimitedKeyListener;
-import com.we.util.MainImagePane;
+import com.we.util.BackgroundPane;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
@@ -74,7 +74,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		MainImagePane mainImagePane = new MainImagePane();
+		BackgroundPane mainImagePane = new BackgroundPane();
 		contentPane.add(mainImagePane);
 		mainImagePane.setLayout(null);
 		
@@ -214,7 +214,19 @@ public class CardTransfersView extends JFrame implements ActionListener {
 					TextUtil.setErrorTxt(lb_error,verifyRes);
 					return;
 				}
+				
+				//上限验证
 				double tradeCash = Double.parseDouble(tf_num.getText());
+				int verify = cardManager.transCashVerify(tradeCash);
+				switch (verify) {
+				case CardManager.ONE_DAY_LIMIT:
+					JOptionPane.showMessageDialog(null,  "超过单日转账上限 "+CardManager.TRANSFERS_LIMIT_DAY, "转账异常", JOptionPane.INFORMATION_MESSAGE); 
+					return;
+				case CardManager.LIMIT_OK:
+				default:
+					break;
+				}
+				
 				if(cardManager.transfersCash(targetCardNum,tradeCash)){
 					int targetCardId = cardManager.getCardIdByCardNum(targetCardNum);
 					if(tradeManager.insertTrade(TradeManager.TRADE_TYPE_TRANSFERS_OUT, tradeCash, targetCardId)){

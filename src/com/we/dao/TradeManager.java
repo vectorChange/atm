@@ -18,9 +18,8 @@ public class TradeManager {
 	public final static int TRADE_TYPE_TAKE = 1;
 	public final static int TRADE_TYPE_TRANSFERS_OUT = 2;
 	public final static int TRADE_TYPE_TRANSFERS_IN = 3;
+	
 	private int cardId;
-//	private int tradeId;
-//	private String tradeDate;
 	
 	private TradeManager() {
 		setCardId(CardManager.getInstance().getCardId());
@@ -108,6 +107,23 @@ public class TradeManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * 查询一天某操作的数值和
+	 * @param today
+	 * @param type 	TRADE_TYPE_TAKE, TRADE_TYPE_TRANSFERS_OUT, TRADE_TYPE_TRANSFERS_IN
+	 * @return
+	 */
+	public double queryOnedayTradeCash(String today,int type) {
+		ArrayList<TradeInfo> list = queryRecentTradeInfos(DateUtil.addDay(today, 1),today);		
+		double cashSum = 0.0;
+		for (TradeInfo tradeInfo : list) {
+			if(tradeInfo.getTradeType() == type){
+				cashSum += tradeInfo.getTradeMoney();
+			}
+		}
+		return cashSum;
 	}
 
 	/**

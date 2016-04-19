@@ -2,11 +2,10 @@ package com.we.util;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.swing.JTextField;
-import javax.swing.text.AbstractDocument.Content;
-
+/**
+ * 只能输入正整数或者小数
+ * @author xiaoguang
+ */
 public class FloatLimitedKeyListener  extends KeyAdapter  {
 	private String canKey = "0123456789.";
 	private String text = "";
