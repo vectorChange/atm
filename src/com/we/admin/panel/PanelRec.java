@@ -99,6 +99,7 @@ public class PanelRec extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		table.setModel(new DefaultTableModel(null, tableHeader));
 		if (!tf_acc.getText().equals("")) { // 查询账号不允许为空
 			CardManager cardManager = CardManager.getInstance();
 			if ( cardManager.getCardIdByCardNum(tf_acc.getText()) == CardManager.NO_EXIT ) {
