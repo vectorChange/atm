@@ -111,14 +111,6 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		scroll.setLocation(158, 83);
 		scroll.setSize(560, 300);
 		table = new JTable(rowData, columnNames) {
-			public Component prepareRenderer(TableCellRenderer renderer,
-					int row, int column) {
-				Component c = super.prepareRenderer(renderer, row, column);
-				if (c instanceof JComponent) {
-					((JComponent) c).setOpaque(false);
-				}
-				return c;
-			}
 			public boolean isCellEditable(int row, int column) {	//禁用编辑
 			     return false;
 			 }
@@ -127,25 +119,12 @@ public class CardDetailsView extends JFrame implements ActionListener {
 		// 设置显示范围
 		Dimension viewSize = new Dimension();
 		viewSize.width = table.getColumnModel().getTotalColumnWidth();
-		;
 		viewSize.height = 10 * table.getRowHeight();
-		table.setPreferredScrollableViewportSize(viewSize);
-		table.setIntercellSpacing(new Dimension(0, 0));
 		JTableHeader header = table.getTableHeader();
 		header.setPreferredSize(new Dimension(30, 26));
-		header.setOpaque(false);
-		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
-		render.setOpaque(false); // 将渲染器设置为透明
-		table.setDefaultRenderer(Object.class, render);
-
-		table.setOpaque(false);
-		scroll.getViewport().setOpaque(false);
-		scroll.setOpaque(false);
-		scroll.getViewport().setOpaque(false);
 		scroll.setViewportView(table);
 		mainImagePane.add(scroll);
 		table.setBounds(168, 161, 155, 1000);
-		table.getTableHeader().setOpaque(false);
 
 		TimerUtil.stopTimeCount();
 	}

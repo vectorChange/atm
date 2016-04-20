@@ -1,5 +1,6 @@
 package com.we.dao;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,7 @@ public class CardNumManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return String.valueOf(Integer.valueOf(retVal) + 1);
+		return String.valueOf(new BigInteger(retVal).add(BigInteger.ONE));
 	}
 
 	/**

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.plaf.DatePickerUI;
 
 import com.we.bean.TradeInfo;
 import com.we.dao.CardManager;
@@ -23,6 +24,7 @@ import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
 import com.we.util.IntegerLimitedKeyListener;
 import com.we.view.CardDetailsView;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class PanelRec extends JPanel implements ActionListener {
