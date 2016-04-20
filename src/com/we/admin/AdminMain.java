@@ -15,12 +15,14 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
+import com.we.admin.panel.PanelChange;
 import com.we.admin.panel.PanelCreate;
 import com.we.admin.panel.PanelDel;
 import com.we.admin.panel.PanelFrozen;
 import com.we.admin.panel.PanelLost;
 import com.we.admin.panel.PanelQue;
 import com.we.admin.panel.PanelRec;
+import com.we.admin.panel.PanelSearchUser;
 
 /**
  * 管理界面的Frame finish
@@ -45,6 +47,7 @@ public class AdminMain extends JFrame {
 	private JMenuItem sel_scan;
 	private JMenuItem sel_acc;
 	private JMenuItem sel_change;
+	private JMenuItem sel_card_for_user;
 	private CardLayout cl;
 	private Font fontItem = new Font("Microsoft YaHei UI", Font.PLAIN, 14);
 	private Font fontselect = new Font("Microsoft YaHei UI", Font.PLAIN, 13);
@@ -136,6 +139,20 @@ public class AdminMain extends JFrame {
 				cl.show(contentPane, PanelQue.TAG);
 			}
 		});
+		
+		contentPane.add(new PanelSearchUser(), PanelSearchUser.TAG);
+		sel_card_for_user.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelSearchUser.TAG);
+			}
+		});
+		
+		contentPane.add(new PanelChange(), PanelChange.TAG);
+		sel_change.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cl.show(contentPane, PanelChange.TAG);
+			}
+		});
 	}
 	
 	/**
@@ -183,5 +200,9 @@ public class AdminMain extends JFrame {
 		sel_change = new JMenuItem("更改密码");
 		sel_change.setFont(fontselect);
 		item_right.add(sel_change);
+		
+		sel_card_for_user = new JMenuItem("查询用户信息");
+		sel_card_for_user.setFont(fontselect);
+		item_query.add(sel_card_for_user);
 	}
 }

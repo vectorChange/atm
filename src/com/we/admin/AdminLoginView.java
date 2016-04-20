@@ -72,11 +72,9 @@ public class AdminLoginView extends JFrame {
 		tf_acc.setFont(new Font("宋体", Font.PLAIN, 18));
 		tf_acc.setBounds(260, 128, 209, 30);
 		tf_acc.setColumns(10);
-		tf_acc.setText("1");
 
 		pf_pwd = new JPasswordField();
 		pf_pwd.setFont(new Font("宋体", Font.PLAIN, 18));
-		pf_pwd.setText("1");
 		pf_pwd.setBounds(260, 191, 209, 30);
 		pf_pwd.addKeyListener(new KeyAdapter() {
 			@Override
