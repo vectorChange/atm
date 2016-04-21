@@ -13,8 +13,6 @@ public class AdminManager {
 	private final static String TB_ADMIN = "AdminInfo";
 	
 	private String adminId;
-	private String adminName;
-	private String adminPwd;
 	private int adminType;
 
 	private AdminManager() {
@@ -46,8 +44,6 @@ public class AdminManager {
 			rs = preSt.executeQuery();
 			if (rs.next()) {
 				adminId = rs.getString("adminId");
-				adminName = rs.getString("adminName");
-				adminPwd = rs.getString("password");
 				adminType = rs.getInt("adminType");
 				return true;
 			} else {

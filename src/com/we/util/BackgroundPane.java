@@ -15,6 +15,7 @@ public class BackgroundPane extends JPanel {
 
 	public BackgroundPane() {
 		try {
+//			image = ImageIO.read(new File("\\bg.png"));
 			image = ImageIO.read(new File("res\\bg.png"));
 			this.setOpaque(false);
 		} catch (IOException ex) {

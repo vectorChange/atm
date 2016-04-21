@@ -107,7 +107,7 @@ public class UserMain extends JFrame implements ActionListener{
 			new CardTakeView().setVisible(true);
 			dispose();
 		}else if(btn == btn_transfers){
-			new CardTransfersView().setVisible(true);;
+			new CardTransfersView().setVisible(true);
 			dispose();
 		}else if(btn == btn_exit){
 			dispose();

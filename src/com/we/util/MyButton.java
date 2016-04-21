@@ -15,6 +15,8 @@ public class MyButton extends JButton {
 	private MyButton myButton;
 	
 	public MyButton(String url){
+//		url = url.replace("res\\", "/");
+//		url = url.replace("res\\", "/");
 		ImageIcon icon = new ImageIcon(url);
 		super.setIcon(icon);
 		myButton = this;
@@ -25,6 +27,9 @@ public class MyButton extends JButton {
 	}
 	
 	public MyButton(String url,int locX,int locY){
+//		url = url.replace("res\\", "/");
+//		url = url.replace("\\", "/");
+//		System.out.println(url);
 		ImageIcon icon = new ImageIcon(url);
 		super.setIcon(icon);
 		myButton = this;

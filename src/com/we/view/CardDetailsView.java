@@ -1,7 +1,6 @@
 package com.we.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -9,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,16 +16,14 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 
 import com.we.UserMain;
 import com.we.bean.TradeInfo;
 import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
-import com.we.util.DateUtil;
 import com.we.util.BackgroundPane;
+import com.we.util.DateUtil;
 import com.we.util.MyButton;
 import com.we.util.TimerUtil;
 

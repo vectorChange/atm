@@ -16,10 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
-import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
 import com.we.dao.AdminManager;
 
 @SuppressWarnings("serial")

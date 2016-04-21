@@ -14,21 +14,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import com.we.UserMain;
 import com.we.dao.CardManager;
 import com.we.dao.CardUserManager;
 import com.we.dao.TradeManager;
-import com.we.util.FloatLimitedKeyListener;
 import com.we.util.BackgroundPane;
+import com.we.util.FloatLimitedKeyListener;
 import com.we.util.MyButton;
 import com.we.util.TextUtil;
 import com.we.util.TimerUtil;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 
 public class CardTransfersView extends JFrame implements ActionListener {
 

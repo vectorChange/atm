@@ -33,7 +33,7 @@ public class UserLoginFrame extends JFrame {
 	private JTextField tf_acc;
 	private JPasswordField tf_pwd;
 	private int failLoginCnt;
-
+ 
 	/**
 	 * Launch the application.
 	 */
@@ -169,11 +169,6 @@ public class UserLoginFrame extends JFrame {
 			}
 			if(!yes){
 				e.consume();
-			}else{	//到指定长度登陆
-				int len = new String(tf_pwd.getPassword()).length()+1;
-				if(len == PASSWORD_LENGTH){
-					doLogin();
-				}
 			}
 			super.keyTyped(e);
 		}

@@ -4,25 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Set;
 
 public class UserManager {
 	private static Connection conn = null;
 	private static UserManager dbManager = null;
-	// private final static String TB_TRADE= "tradeinfo";
 	private final static String TB_USER = "userinfo";
-	private final static int NO_EXIT = -1;
-
-	private String cardNum;
-	private String cardPwd;
-	private int cardId;
-
-	private void testing() {
-		cardPwd = "1";
-	}
-
+	
 	private UserManager() {
-		testing();
 	}
 
 	public static UserManager getInstance() {
