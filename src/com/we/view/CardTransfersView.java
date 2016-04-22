@@ -232,6 +232,7 @@ public class CardTransfersView extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(null, "转账成功，但添加交易记录失败", "转账异常", JOptionPane.WARNING_MESSAGE ); 
 					}
 					new CardBusinessDone(getClass(), tradeCash).setVisible(true);
+					dispose();
 				}else{
 					TextUtil.setErrorTxt(lb_error,"转账失败");
 				}
