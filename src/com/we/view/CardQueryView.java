@@ -70,7 +70,7 @@ public class CardQueryView extends JFrame  implements ActionListener{
 		
 		JLabel label = new JLabel("账户余额：");
 		label.setForeground(Color.RED);
-		label.setBounds(300, 138, 200, 20);
+		label.setBounds(300, 138, 312, 20);
 		label.setFont(new Font("宋体", Font.PLAIN,22));
 		mainImagePane.add(label);
 		
