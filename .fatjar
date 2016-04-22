@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Apr 22 11:06:19 CST 2016
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=F\:\\Desktop\\a1gen.jar
+manifest.mergeall=true
+manifest.mainclass=com.we.view.UserLoginFrame
+manifest.file=<createnew>
+jarname.isextern=true
+onejar.expand=
+excludes=
+includes=<inc|atm/res>
