@@ -24,7 +24,7 @@ public class DbFactory {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(
-					"jdbc:mysql://172.25.155.22:3307/"+DBNAME, "root", "test");
+					"jdbc:mysql://127.0.0.1:3306/"+DBNAME, "root", "pwd");
 		} catch (Exception e) {
 			System.out.println("数据库连接失败" + e.getMessage());
 		}

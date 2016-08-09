@@ -2,7 +2,7 @@ package com.we.bean;
 
 /**
  * 交易记录bean
- * @author 梓扬
+ * @author xiaoyang
  *
  */
 public class TradeInfo {

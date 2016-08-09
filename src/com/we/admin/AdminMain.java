@@ -26,7 +26,7 @@ import com.we.admin.panel.PanelSearchUser;
 
 /**
  * 管理界面的Frame finish
- * @author 梓扬
+ * @author xiaoyang
  *
  */
 @SuppressWarnings("serial")

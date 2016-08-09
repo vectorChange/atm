@@ -30,7 +30,7 @@ import com.we.dao.UserManager;
 /**
  * 开户的界面，用户输入设置的密码和自己的身份证号即可。 界面返回，卡号
  * 
- * @author 梓扬
+ * @author xiaoyang
  *
  */
 @SuppressWarnings("serial")
@@ -278,7 +278,7 @@ public class PanelCreate extends JPanel implements ActionListener {
 	/**
 	 * 检查密码是否一致
 	 * 
-	 * @author 梓扬
+	 * @author xiaoyang
 	 *
 	 */
 	class CheckPwdEqueal implements FocusListener {
